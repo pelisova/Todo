@@ -1,0 +1,57 @@
+.form-group {
+  display: flex;
+  flex-direction: column;
+
+  .label {
+    font-weight: bold;
+    padding: 1em 0em;
+    display: block;
+    font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+      "Lucida Sans", Arial, sans-serif;
+  }
+
+  .submit {
+    display: inline-flex;
+
+    .form-control {
+      width: 550px;
+    }
+  }
+
+  .button {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 25px;
+
+    .btn-info {
+      margin-right: 5px;
+      cursor: pointer;
+    }
+    .save {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      background: linear-gradient(
+        to right,
+        rgba(214, 97, 19, 0.644),
+        rgb(212, 20, 20)
+      );
+      color: white;
+      opacity: 0.7;
+
+      mat-icon {
+        margin-right: 0.3em;
+      }
+    }
+  }
+
+  .btn-hover:hover {
+    opacity: 1;
+  }
+}
+
+.text-danger {
+  font-size: smaller;
+  margin: 0;
+}
