@@ -1,0 +1,26 @@
+<div class="todo-item">
+  <div class="item" [class.completed]="todo?.completed">
+    <div class="check-box" (click)="toggleCompletedMethod()">
+      <i class="material-icons check">check</i>
+    </div>
+
+    <div class="todo-text" (click)="toggleCompletedMethod()">
+      {{ todo?.text }}
+    </div>
+
+    <div class="edit-delete">
+      <i class="material-icons edit" appToolTip="Edit Todo" (click)="onEdit()">
+        edit
+      </i>
+      <i
+        class="material-icons delete"
+        appToolTip="Delete Todo"
+        (click)="deleteEventMethod()"
+      >
+        delete
+      </i>
+    </div>
+  </div>
+
+  <hr />
+</div>

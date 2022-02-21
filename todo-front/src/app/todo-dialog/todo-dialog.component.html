@@ -1,0 +1,36 @@
+<form (ngSubmit)="onSubmitDialog(form)" #form="ngForm">
+  <div class="form-group">
+    <label class="label">New Todo</label>
+    <div class="submit">
+      <input
+        type="text"
+        class="form-control"
+        value="{{ todo.text }}"
+        [ngModel]="todo.text"
+        name="todoEdit"
+        minlength="2"
+        required
+      />
+    </div>
+    <div *ngIf="form.dirty">
+      <p *ngIf="form.controls.todoEdit.errors?.required" class="text-danger">
+        Please type here todo task!
+      </p>
+      <p *ngIf="form.controls.todoEdit.errors?.minlength" class="text-danger">
+        Minimum length od todo task is 2!
+      </p>
+    </div>
+    <div class="button">
+      <button class="btn btn-info col-2" type="button" (click)="cancelDialog()">
+        Cancel
+      </button>
+      <button
+        class="btn btn-light save col-2"
+        type="submit"
+        [disabled]="form.invalid"
+      >
+        <mat-icon>save</mat-icon>Save
+      </button>
+    </div>
+  </div>
+</form>

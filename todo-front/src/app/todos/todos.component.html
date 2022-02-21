@@ -1,0 +1,49 @@
+<section class="section">
+  <h1 class="mat-h1">Todos</h1>
+</section>
+
+<div class="add-todo-container">
+  <div class="container">
+    <form (ngSubmit)="onSubmit(form)" #form="ngForm" id="add-form">
+      <div class="form-group">
+        <label class="label">New Todo</label>
+        <div class="submit">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Type todo text here ..."
+            ngModel
+            name="todo"
+            minlength="2"
+            required
+          />
+          <button class="btn btn-hover" type="submit" [disabled]="form.invalid">
+            <mat-icon>add_circle</mat-icon>Add
+          </button>
+        </div>
+      </div>
+      <div *ngIf="form.dirty">
+        <p *ngIf="form.controls.todo.errors?.required" class="text-danger">
+          Please type here todo task!
+        </p>
+        <p *ngIf="form.controls.todo.errors?.minlength" class="text-danger">
+          Minimum length od todo task is 2!
+        </p>
+      </div>
+    </form>
+  </div>
+</div>
+
+<section class="list-section">
+  <div class="container">
+    <div class="todo-list">
+      <app-todo-item
+        *ngFor="let todo of todos"
+        [todo]="todo"
+        (todoToggle)="toggleCompleted(todo)"
+        (editEvent)="onEdit(todo.id, todo)"
+        (deleteEvent)="onDelete(todo.id)"
+      ></app-todo-item>
+    </div>
+  </div>
+</section>
