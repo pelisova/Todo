@@ -98,3 +98,12 @@
 .todo-list {
   width: 100%;
 }
+
+.my-pagination ::ng-deep .page-link{
+  color: rgb(3, 34, 17) !important;
+}
+.my-pagination ::ng-deep .page-item.active .page-link {
+  color: white !important;
+  background: linear-gradient(to right, rgb(2, 228, 171), rgb(74, 215, 240)) !important;
+}
+

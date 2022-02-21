@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Anja\\Desktop\\TodoBack\\Core\\Core.csproj": {}
+    "C:\\Users\\Anja\\Desktop\\TodoApp\\todo-back\\Core\\Core.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Anja\\Desktop\\TodoBack\\Core\\Core.csproj": {
+    "C:\\Users\\Anja\\Desktop\\TodoApp\\todo-back\\Core\\Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Anja\\Desktop\\TodoBack\\Core\\Core.csproj",
+        "projectUniqueName": "C:\\Users\\Anja\\Desktop\\TodoApp\\todo-back\\Core\\Core.csproj",
         "projectName": "Core",
-        "projectPath": "C:\\Users\\Anja\\Desktop\\TodoBack\\Core\\Core.csproj",
+        "projectPath": "C:\\Users\\Anja\\Desktop\\TodoApp\\todo-back\\Core\\Core.csproj",
         "packagesPath": "C:\\Users\\Anja\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Anja\\Desktop\\TodoBack\\Core\\obj\\",
+        "outputPath": "C:\\Users\\Anja\\Desktop\\TodoApp\\todo-back\\Core\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Anja\\AppData\\Roaming\\NuGet\\NuGet.Config"

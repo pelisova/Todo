@@ -1638,11 +1638,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Anja\\Desktop\\TodoBack\\EFCore\\EFCore.csproj",
+      "projectUniqueName": "C:\\Users\\Anja\\Desktop\\TodoApp\\todo-back\\EFCore\\EFCore.csproj",
       "projectName": "EFCore",
-      "projectPath": "C:\\Users\\Anja\\Desktop\\TodoBack\\EFCore\\EFCore.csproj",
+      "projectPath": "C:\\Users\\Anja\\Desktop\\TodoApp\\todo-back\\EFCore\\EFCore.csproj",
       "packagesPath": "C:\\Users\\Anja\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Anja\\Desktop\\TodoBack\\EFCore\\obj\\",
+      "outputPath": "C:\\Users\\Anja\\Desktop\\TodoApp\\todo-back\\EFCore\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Anja\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -1657,8 +1657,8 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\Users\\Anja\\Desktop\\TodoBack\\Core\\Core.csproj": {
-              "projectPath": "C:\\Users\\Anja\\Desktop\\TodoBack\\Core\\Core.csproj"
+            "C:\\Users\\Anja\\Desktop\\TodoApp\\todo-back\\Core\\Core.csproj": {
+              "projectPath": "C:\\Users\\Anja\\Desktop\\TodoApp\\todo-back\\Core\\Core.csproj"
             }
           }
         }

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "nobVb8rqo8Po15gdB3/2TMt5AxnnpSXpzxL/Z4dlMBRCPxSHhR/FHSsas2lXYl5XSC78ns2NhM4SRWWyWQ6ivA==",
+  "dgSpecHash": "8oy6Rlpa8Z/7J2PbAw3/W43u4RY1vFL8dlPCQZP30v8lURey6aalGFV961h54w0blMtjX1aagaxEJU28VHyClg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Anja\\Desktop\\TodoBack\\Core\\Core.csproj",
+  "projectFilePath": "C:\\Users\\Anja\\Desktop\\TodoApp\\todo-back\\Core\\Core.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

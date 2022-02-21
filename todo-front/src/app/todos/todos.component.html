@@ -47,3 +47,17 @@
     </div>
   </div>
 </section>
+
+<div class="d-flex justify-content-center" style="padding: 1%;" *ngIf="pagination">
+  <pagination class="my-pagination"
+    [boundaryLinks]="true"
+    [totalItems]="pagination.totalItems"
+    [itemsPerPage]="pagination.itemsPerPage"
+    [(ngModel)]="pagination.currentPage"
+    (pageChanged)="pagedChanged($event)"
+    previousText="&lsaquo;"
+    nextText="&rsaquo;"
+    firstText="&laquo;" 
+    lastText="&raquo;"> 
+</pagination>
+</div>

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "mGivP95ctzqvaaB8FTB1VeWlKEb9eY411GZePtbScZ9L8XcJC4Ya5Zh2dB5WnkV7vK5q4ecT0qcNT8FzypvJyQ==",
+  "dgSpecHash": "E2gIEirKbL3osFEmAN/kJEMesHl8YpLkunOdKYbw1ZzEbDWWUOcnWIDhU7OGQB5v202ijcwSgmSGhkVYk/pvcg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Anja\\Desktop\\TodoBack\\BusinessLayer\\BusinessLayer.csproj",
+  "projectFilePath": "C:\\Users\\Anja\\Desktop\\TodoApp\\todo-back\\BusinessLayer\\BusinessLayer.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Anja\\.nuget\\packages\\automapper\\11.0.0\\automapper.11.0.0.nupkg.sha512",
     "C:\\Users\\Anja\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\11.0.0\\automapper.extensions.microsoft.dependencyinjection.11.0.0.nupkg.sha512",

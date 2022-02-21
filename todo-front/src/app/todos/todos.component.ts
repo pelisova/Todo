@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
-import { of } from 'rxjs';
 import Swal from 'sweetalert2';
 import { TodoTask } from '../models/model';
+import { Pagination } from '../models/pagination';
 import { DataService } from '../services/data.service';
 import { TodoDialogComponent } from '../todo-dialog/todo-dialog.component';
 
@@ -15,6 +15,9 @@ import { TodoDialogComponent } from '../todo-dialog/todo-dialog.component';
 })
 export class TodosComponent implements OnInit {
   todos: TodoTask[] = [];
+  pagination!: Pagination;
+  pageNumber = 1;
+  pageSize = 3;
 
   constructor(
     private dataService: DataService,
@@ -27,10 +30,17 @@ export class TodosComponent implements OnInit {
   }
 
   getTasks() {
-    if (this.todos.length > 0) return of(this.todos);
-    this.dataService.getAllTodos().subscribe((res) => {
-      this.todos = res;
+    this.dataService.getAllTodos(this.pageNumber, this.pageSize).subscribe((res) => {
+      if(res.result) this.todos = res.result;
+      if(res.pagination) this.pagination = res.pagination
+      console.log(res.result);
+      console.log(res.pagination);
     });
+  }
+
+  pagedChanged(event: any) {
+    this.pageNumber = event.page;
+    this.getTasks();
   }
 
   toggleCompleted(todo: TodoTask) {
@@ -51,7 +61,7 @@ export class TodosComponent implements OnInit {
         userId: todo.userId,
       })
       .subscribe((res) => {
-        console.log(res);
+        // console.log(res);
         this.todos = res;
       });
   }

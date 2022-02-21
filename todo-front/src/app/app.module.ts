@@ -17,6 +17,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { TodoDialogComponent } from './todo-dialog/todo-dialog.component';
 import { ToolTipDirective } from './shared/tool-tip.directive';
 import { HttpClientModule } from '@angular/common/http';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { HttpClientModule } from '@angular/common/http';
       // progressBar: true,
       // progressAnimation: 'increasing',
     }),
+    PaginationModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent],

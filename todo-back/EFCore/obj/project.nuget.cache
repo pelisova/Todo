@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "kb697h/0IosnJf4VmFImt7J1pcx3LfMh/QxyriPK58tc0PE8mm9fx3M6i7AHipZhkCc+/DrimzFBSlIRPZ6U7A==",
+  "dgSpecHash": "WKNkSGhTr47jujEAfrNzflbIiH8KFc5gkrkhnfbETivGcbyPrzAU+/VdTYQyAsqMB8+UopZ65hUpzwlpKvp/VQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Anja\\Desktop\\TodoBack\\EFCore\\EFCore.csproj",
+  "projectFilePath": "C:\\Users\\Anja\\Desktop\\TodoApp\\todo-back\\EFCore\\EFCore.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Anja\\.nuget\\packages\\automapper\\11.0.0\\automapper.11.0.0.nupkg.sha512",
     "C:\\Users\\Anja\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\11.0.0\\automapper.extensions.microsoft.dependencyinjection.11.0.0.nupkg.sha512",
