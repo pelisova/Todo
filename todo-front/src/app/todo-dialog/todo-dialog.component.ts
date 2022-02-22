@@ -17,7 +17,6 @@ export class TodoDialogComponent implements OnInit {
   ngOnInit(): void {}
 
   onSubmitDialog(form: NgForm) {
-    // console.log(form.value);
     this.dialog.close(form.value.todoEdit);
   }
 

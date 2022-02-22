@@ -12,7 +12,7 @@ namespace Core.Entities
         [Required]
         public string? Text { get; set; }
         
-        public bool Completed { get; set; }
+        public bool? Completed { get; set; }
         public int UserId {get; set;}
         public User? User {get; set;}
     }

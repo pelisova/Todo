@@ -39,14 +39,14 @@ export class DataService {
   }
 
   addTodo(todo: CreateTask) {
-    return this.http.post<TodoTask[]>(this.baseUrl + 'task', todo);
+    return this.http.post<TodoTask>(this.baseUrl + 'task', todo, {observe: 'response'});
   }
 
   updateTodo(id: number, todo: TodoTask) {
-    return this.http.patch<TodoTask[]>(this.baseUrl + 'task/' + id, todo);
+    return this.http.patch<TodoTask>(this.baseUrl + 'task/' + id, todo, {observe: 'response'});
   }
 
   deleteTodo(id: number) {
-    return this.http.delete<TodoTask[]>(this.baseUrl + 'task/' + id, {});
+    return this.http.delete(this.baseUrl + 'task/' + id, {observe: 'response', responseType: 'text'});
   }
 }

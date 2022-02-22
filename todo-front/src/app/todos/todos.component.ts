@@ -18,6 +18,7 @@ export class TodosComponent implements OnInit {
   pagination!: Pagination;
   pageNumber = 1;
   pageSize = 3;
+  err = null;
 
   constructor(
     private dataService: DataService,
@@ -33,8 +34,8 @@ export class TodosComponent implements OnInit {
     this.dataService.getAllTodos(this.pageNumber, this.pageSize).subscribe((res) => {
       if(res.result) this.todos = res.result;
       if(res.pagination) this.pagination = res.pagination
-      console.log(res.result);
-      console.log(res.pagination);
+    }, err => {
+        this.err = err.error;
     });
   }
 
@@ -45,14 +46,7 @@ export class TodosComponent implements OnInit {
 
   toggleCompleted(todo: TodoTask) {
     todo.completed = !todo.completed;
-    console.log(todo.completed);
-
-    if (todo.completed) {
-      this.toastr.success('Your task is completed!');
-    } else {
-      this.toastr.warning('Task is not completed!');
-    }
-
+    
     this.dataService
       .updateTodo(todo.id, {
         id: todo.id,
@@ -61,34 +55,29 @@ export class TodosComponent implements OnInit {
         userId: todo.userId,
       })
       .subscribe((res) => {
-        // console.log(res);
-        this.todos = res;
+        res.body?.completed ? this.toastr.success('Your task is completed!') : this.toastr.warning('Task is not completed!');
       });
   }
 
-  onSubmit(form: NgForm) {
-    // console.log(form);
-    // console.log(form.dirty);
-    // console.log(form.valid);
-    // console.log(form.controls.todo.errors);
-    // console.log(form.value.todo);
-
-    if (form.invalid) return;
+  onSubmit(form: NgForm) { 
+   if (form.invalid) return;
 
     this.dataService
       .addTodo({ text: form.value.todo, userId: 1 })
       .subscribe((res) => {
-        // console.log(res);
-        this.todos = res;
+        if(res.body){
+          this.getTasks();
 
-        Swal.fire({
-          position: 'top-end',
-          icon: 'success',
-          title: 'Task is successfully created!',
-          showConfirmButton: false,
-          timer: 1000,
-          width: '400px',
-        });
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Task is successfully created!',
+            showConfirmButton: false,
+            timer: 1500,
+            width: '400px',
+          });
+        } 
+
       }); // mocking here!
 
     form.reset();
@@ -101,7 +90,6 @@ export class TodosComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log('Dialog result: ', result);
       if (result === undefined) return;
 
       this.dataService
@@ -112,25 +100,28 @@ export class TodosComponent implements OnInit {
           userId: 1,
         })
         .subscribe((res) => {
-          this.toastr.success('Your task is updated!');
-          this.todos = res;
+          if(res.statusText === 'Created'){
+            this.getTasks();
+            this.toastr.success(res.statusText + '!', 'Your task is updated!');
+          }
         });
     });
   }
 
   onDelete(id: number) {
     this.dataService.deleteTodo(id).subscribe((res) => {
-      // console.log(res);
-      this.todos = res;
-
-      Swal.fire({
-        position: 'top-end',
-        icon: 'success',
-        title: 'Task is successfully deleted!',
-        showConfirmButton: false,
-        timer: 1000,
-        width: '400px',
-      });
-    });
+      if(res.statusText === 'Accepted'){
+        this.getTasks();
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: res.body?.toString(),
+          showConfirmButton: false,
+          timer: 3500,
+          width: '400px',
+        });
+      }
+    
+    }, err => console.log(err));
   }
 }
