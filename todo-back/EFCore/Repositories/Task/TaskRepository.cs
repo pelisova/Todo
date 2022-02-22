@@ -18,11 +18,11 @@ namespace EFCore.Repositories
             _context = context;
         }
 
-        public async Task<TodoTask> CreateTask(TodoTask task)
+        public async Task<List<TodoTask>> CreateTask(TodoTask task)
         {
             await _context.Tasks.AddAsync(task);
             _context.SaveChangesAsync();
-             return task;
+             return await this.GetTasks();
         }
 
         public async Task<TodoTask> GetTaskById(int id)
@@ -36,14 +36,14 @@ namespace EFCore.Repositories
         }
 
         
-        public async Task<TodoTask> UpdateTask(TodoTask task)
+        public async Task<List<TodoTask>> UpdateTask(TodoTask task)
         {
             _context.Tasks.Update(task);
             await _context.SaveChangesAsync();
-            return task;
+            return await this.GetTasks();
         }
 
-        public async Task DeleteTask(int id)
+        public async Task<List<TodoTask>> DeleteTask(int id)
         {
             var task = await this.GetTaskById(id);
             if(task == null) {
@@ -51,6 +51,7 @@ namespace EFCore.Repositories
             }
             _context.Tasks.Remove(task);
             await _context.SaveChangesAsync();
+            return await this.GetTasks();
         }
 
         public async Task<List<TodoTask>> GetTasksPagination()

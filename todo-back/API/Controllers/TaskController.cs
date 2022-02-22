@@ -20,10 +20,10 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<TaskDto>> CreateTask([FromBody] CreateTaskDto createTaskDto)
+        public async Task<ActionResult<List<TaskDto>>> CreateTask([FromBody] CreateTaskDto createTaskDto)
         {
-            var task = await _taskService.CreateTask(createTaskDto);
-            return (task == null) ? NotFound() : Created("Task is successfully created", task);
+            var tasks= await _taskService.CreateTask(createTaskDto);
+            return (!tasks.Any()) ? NotFound() : Created("Task is successfully created", tasks);
         }
 
         [HttpGet]
@@ -55,9 +55,9 @@ namespace API.Controllers
 
             try
             {
-                // Console.Write(JsonConvert.SerializeObject(updateTaskDto));
-                var newTask = await _taskService.UpdateTask(id, updateTaskDto);
-                return (newTask == null) ? NotFound("Oops! Task is not found!") : Created("Task is successfully updated", newTask);   
+                Console.Write(JsonConvert.SerializeObject(updateTaskDto));
+                var newTasks = await _taskService.UpdateTask(id, updateTaskDto);
+                return (!newTasks.Any()) ? NotFound("Oops! Task is not found!") : Created("Task is successfully updated", newTasks);   
             }
             catch (System.Exception ex)
             {
@@ -66,12 +66,12 @@ namespace API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteTask(int id)
+        public async Task<ActionResult<List<TaskDto>>> DeleteTask(int id)
         {
             try
             {
-                await _taskService.DeleteTask(id);
-                return StatusCode(202, "Task is successfully deleted!");
+                var tasks = await _taskService.DeleteTask(id);
+                return Accepted("Task is successfully deleted!", tasks);
             }
             catch (System.Exception ex)
             {

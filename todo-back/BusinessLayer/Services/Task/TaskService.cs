@@ -24,9 +24,9 @@ namespace BusinessLayer.Services
             _mapper = mapper;
         }
 
-        public async Task<TaskDto> CreateTask(CreateTaskDto createTaskDto)
+        public async Task<List<TaskDto>> CreateTask(CreateTaskDto createTaskDto)
         {
-            return _mapper.Map<TaskDto>(await _taskRepository.CreateTask(_mapper.Map<TodoTask>(createTaskDto)));
+            return _mapper.Map<List<TaskDto>>(await _taskRepository.CreateTask(_mapper.Map<TodoTask>(createTaskDto)));
         }
 
         public async Task<TaskDto> GetTaskById(int id)
@@ -39,20 +39,21 @@ namespace BusinessLayer.Services
             return _mapper.Map<List<TaskDto>>(await _taskRepository.GetTasks());
         }
 
-        public async Task<TaskDto> UpdateTask(int id, UpdateTaskDto updateTaskDto)
+        public async Task<List<TaskDto>> UpdateTask(int id, UpdateTaskDto updateTaskDto)
         {
+            Console.WriteLine("Heloooo service!!");
             var task = await _taskRepository.GetTaskById(id);
             var user = await _userRepository.GetUserById(updateTaskDto.UserId);
             if(user.UserId != task.UserId) throw new Exception("You do not have access for this resource!");
             var taskToUpdate = _mapper.Map<UpdateTaskDto, TodoTask>(updateTaskDto, task);
-            return _mapper.Map<TaskDto>(await _taskRepository.UpdateTask(taskToUpdate));
+            return _mapper.Map<List<TaskDto>>(await _taskRepository.UpdateTask(taskToUpdate));
         }
 
-        public async Task DeleteTask(int id)
+        public async Task<List<TaskDto>> DeleteTask(int id)
         {
             try
             {
-               await _taskRepository.DeleteTask(id);
+               return _mapper.Map<List<TaskDto>>(await _taskRepository.DeleteTask(id));
             }
             catch (System.Exception ex)
             {

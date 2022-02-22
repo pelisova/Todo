@@ -11,7 +11,7 @@ namespace Core.DTOs.task
         public int Id { get; set; }
         public string? Text { get; set; }
         
-        public bool Completed { get; set; } = false;
+        public bool Completed { get; set; }
 
         public int UserId {get; set;}
     }
