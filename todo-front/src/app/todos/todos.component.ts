@@ -18,6 +18,7 @@ export class TodosComponent implements OnInit {
   pagination!: Pagination;
   pageNumber = 1;
   pageSize = 3;
+  error = null;
 
   constructor(
     private dataService: DataService,
@@ -29,12 +30,12 @@ export class TodosComponent implements OnInit {
     this.getTasks();
   }
 
-  getTasks() {
+   getTasks() {
     this.dataService.getAllTodos(this.pageNumber, this.pageSize).subscribe((res) => {
       if(res.result) this.todos = res.result;
       if(res.pagination) this.pagination = res.pagination
-      console.log(res.result);
-      console.log(res.pagination);
+    }, err => {
+      this.error = err.error;
     });
   }
 
@@ -45,7 +46,6 @@ export class TodosComponent implements OnInit {
 
   toggleCompleted(todo: TodoTask) {
     todo.completed = !todo.completed;
-    console.log(todo.completed);
 
     if (todo.completed) {
       this.toastr.success('Your task is completed!');
@@ -59,32 +59,24 @@ export class TodosComponent implements OnInit {
         text: todo.text,
         completed: todo.completed,
         userId: todo.userId,
-      })
-      .subscribe((res) => {
-        // console.log(res);
-        this.todos = res;
-      });
+      }).subscribe(); // subscribe is required to trigger HttpClient request (because of observable!)
   }
 
   onSubmit(form: NgForm) {
-    // console.log(form);
-    // console.log(form.dirty);
-    // console.log(form.valid);
-    // console.log(form.controls.todo.errors);
-    // console.log(form.value.todo);
-
     if (form.invalid) return;
 
     this.dataService
-      .addTodo({ text: form.value.todo, userId: 1 })
-      .subscribe((res) => {
-        // console.log(res);
-        this.todos = res;
+      .addTodo({ text: form.value.todo, userId: 1 }, this.pageNumber, this.pageSize)
+      .subscribe((res: any) => {
+        // console.log(res); // interface dor this!
+        if(res.result) this.todos = res.result.tasks;
+        if(res.pagination) this.pagination = res.pagination;
+        this.error = null;
 
         Swal.fire({
           position: 'top-end',
           icon: 'success',
-          title: 'Task is successfully created!',
+          title: res.result.message,
           showConfirmButton: false,
           timer: 1000,
           width: '400px',
@@ -101,7 +93,6 @@ export class TodosComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log('Dialog result: ', result);
       if (result === undefined) return;
 
       this.dataService
@@ -110,23 +101,26 @@ export class TodosComponent implements OnInit {
           text: result,
           completed: todo.completed,
           userId: 1,
-        })
-        .subscribe((res) => {
-          this.toastr.success('Your task is updated!');
-          this.todos = res;
+        }, this.pageNumber, this.pageSize)
+        .subscribe((res:any) => {
+          // console.log(res);
+          if(res.result) this.todos = res.result.newTasks;
+          if(res.pagination) this.pagination = res.pagination;
+          this.toastr.success(res.result.message);
         });
     });
   }
 
   onDelete(id: number) {
-    this.dataService.deleteTodo(id).subscribe((res) => {
-      // console.log(res);
-      this.todos = res;
+    this.dataService.deleteTodo(id, this.pageNumber, this.pageSize).subscribe((res: any) => {
+      //interface for res:any
+      if(res.result) this.todos = res.result.tasks;
+      if(res.pagination) this.pagination = res.pagination;
 
       Swal.fire({
         position: 'top-end',
         icon: 'success',
-        title: 'Task is successfully deleted!',
+        title: res.result.message,
         showConfirmButton: false,
         timer: 1000,
         width: '400px',

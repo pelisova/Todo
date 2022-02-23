@@ -24,9 +24,10 @@ namespace BusinessLayer.Services
             _mapper = mapper;
         }
 
-        public async Task<List<TaskDto>> CreateTask(CreateTaskDto createTaskDto)
+        public async Task<PagedList<TaskDto>> CreateTask(CreateTaskDto createTaskDto, PaginationParams paginationParams)
         {
-            return _mapper.Map<List<TaskDto>>(await _taskRepository.CreateTask(_mapper.Map<TodoTask>(createTaskDto)));
+            var tasks = (_mapper.Map<List<TaskDto>>(await _taskRepository.CreateTask(_mapper.Map<TodoTask>(createTaskDto)))).AsQueryable();
+            return PagedList<TaskDto>.CreateAsync(tasks, paginationParams.PageNumber, paginationParams.PageSize);
         }
 
         public async Task<TaskDto> GetTaskById(int id)
@@ -39,21 +40,22 @@ namespace BusinessLayer.Services
             return _mapper.Map<List<TaskDto>>(await _taskRepository.GetTasks());
         }
 
-        public async Task<List<TaskDto>> UpdateTask(int id, UpdateTaskDto updateTaskDto)
+        public async Task<PagedList<TaskDto>> UpdateTask(int id, UpdateTaskDto updateTaskDto, PaginationParams paginationParams)
         {
-            Console.WriteLine("Heloooo service!!");
             var task = await _taskRepository.GetTaskById(id);
             var user = await _userRepository.GetUserById(updateTaskDto.UserId);
             if(user.UserId != task.UserId) throw new Exception("You do not have access for this resource!");
             var taskToUpdate = _mapper.Map<UpdateTaskDto, TodoTask>(updateTaskDto, task);
-            return _mapper.Map<List<TaskDto>>(await _taskRepository.UpdateTask(taskToUpdate));
+            var tasks = (_mapper.Map<List<TaskDto>>(await _taskRepository.UpdateTask(taskToUpdate))).AsQueryable();
+            return PagedList<TaskDto>.CreateAsync(tasks, paginationParams.PageNumber, paginationParams.PageSize);
         }
 
-        public async Task<List<TaskDto>> DeleteTask(int id)
+        public async Task<PagedList<TaskDto>> DeleteTask(int id, PaginationParams paginationParams)
         {
             try
             {
-               return _mapper.Map<List<TaskDto>>(await _taskRepository.DeleteTask(id));
+               var tasks = (_mapper.Map<List<TaskDto>>(await _taskRepository.DeleteTask(id))).AsQueryable();
+               return PagedList<TaskDto>.CreateAsync(tasks, paginationParams.PageNumber, paginationParams.PageSize);
             }
             catch (System.Exception ex)
             {

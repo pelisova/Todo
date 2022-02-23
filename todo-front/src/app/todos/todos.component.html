@@ -48,6 +48,10 @@
   </div>
 </section>
 
+<div class="d-flex justify-content-center error" *ngIf="error">
+  <h1>{{error}}</h1>
+</div>
+
 <div class="d-flex justify-content-center" style="padding: 1%;" *ngIf="pagination">
   <pagination class="my-pagination"
     [boundaryLinks]="true"

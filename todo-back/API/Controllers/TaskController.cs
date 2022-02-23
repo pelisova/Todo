@@ -20,10 +20,11 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<List<TaskDto>>> CreateTask([FromBody] CreateTaskDto createTaskDto)
+        public async Task<ActionResult<PagedList<TaskDto>>> CreateTask([FromBody] CreateTaskDto createTaskDto, [FromQuery] PaginationParams paginationParams)
         {
-            var tasks= await _taskService.CreateTask(createTaskDto);
-            return (!tasks.Any()) ? NotFound() : Created("Task is successfully created", tasks);
+            var tasks = await _taskService.CreateTask(createTaskDto, paginationParams);
+            Response.AddPaginationHeader(tasks.CurrentPage, tasks.PageSize, tasks.TotalCount, tasks.TotalPages);
+            return (!tasks.Any()) ? NotFound() : Created("201", new{Message = "Task is successfully created", tasks});
         }
 
         [HttpGet]
@@ -49,15 +50,18 @@ namespace API.Controllers
         } 
 
         [HttpPatch("{id}")]
-        public async Task<ActionResult<List<TaskDto>>> UpdateTask(int id, [FromBody] UpdateTaskDto updateTaskDto)
+        public async Task<ActionResult<PagedList<TaskDto>>> UpdateTask(int id, [FromBody] UpdateTaskDto updateTaskDto, [FromQuery] PaginationParams paginationParams)
         {
             if(id != updateTaskDto.Id) return BadRequest("Invalid task to update!");
 
             try
             {
-                Console.Write(JsonConvert.SerializeObject(updateTaskDto));
-                var newTasks = await _taskService.UpdateTask(id, updateTaskDto);
-                return (!newTasks.Any()) ? NotFound("Oops! Task is not found!") : Created("Task is successfully updated", newTasks);   
+                // Console.Write(JsonConvert.SerializeObject(updateTaskDto));
+                var newTasks = await _taskService.UpdateTask(id, updateTaskDto, paginationParams);
+                Response.AddPaginationHeader(newTasks.CurrentPage, newTasks.PageSize, newTasks.TotalCount, newTasks.TotalPages);
+                return (!newTasks.Any()) ?
+                     NotFound("Oops! Task is not found!") : 
+                     Created("201", new{Message = "Task is successfully updated", newTasks});   
             }
             catch (System.Exception ex)
             {
@@ -66,12 +70,13 @@ namespace API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<List<TaskDto>>> DeleteTask(int id)
+        public async Task<ActionResult<PagedList<TaskDto>>> DeleteTask(int id, [FromQuery] PaginationParams paginationParams)
         {
             try
             {
-                var tasks = await _taskService.DeleteTask(id);
-                return Accepted("Task is successfully deleted!", tasks);
+                var tasks = await _taskService.DeleteTask(id, paginationParams);
+                Response.AddPaginationHeader(tasks.CurrentPage, tasks.PageSize, tasks.TotalCount, tasks.TotalPages);
+                return Accepted(new {Message = "Task is successfully deleted!", tasks});
             }
             catch (System.Exception ex)
             {
