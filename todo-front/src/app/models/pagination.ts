@@ -6,6 +6,11 @@ export interface Pagination {
 }
 
 export class PaginatedResult<T> {
-  result: T | undefined;
+  result: Result<T> | undefined;
   pagination: Pagination | undefined;
 }
+
+export type Result<T> = {
+  message: string | undefined;
+  data: T;
+};

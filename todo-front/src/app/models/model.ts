@@ -9,3 +9,8 @@ export interface CreateTask {
   text: string;
   userId: number;
 }
+
+export interface PagParams {
+  pageNumber?: number;
+  pageSize?: number;
+}

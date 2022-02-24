@@ -3,8 +3,8 @@ import { NgForm } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
-import { TodoTask } from '../models/model';
-import { Pagination } from '../models/pagination';
+import { CreateTask, PagParams, TodoTask } from '../models/model';
+import { PaginatedResult, Pagination } from '../models/pagination';
 import { DataService } from '../services/data.service';
 import { TodoDialogComponent } from '../todo-dialog/todo-dialog.component';
 
@@ -16,8 +16,12 @@ import { TodoDialogComponent } from '../todo-dialog/todo-dialog.component';
 export class TodosComponent implements OnInit {
   todos: TodoTask[] = [];
   pagination!: Pagination;
-  pageNumber = 1;
-  pageSize = 3;
+
+  PagParams: PagParams = {
+    pageNumber: 1,
+    pageSize: 3,
+  };
+
   error = null;
 
   constructor(
@@ -27,25 +31,35 @@ export class TodosComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getTasks();
+    this.getdata();
   }
 
-   getTasks() {
-    this.dataService.getAllTodos(this.pageNumber, this.pageSize).subscribe((res) => {
-      if(res.result) this.todos = res.result;
-      if(res.pagination) this.pagination = res.pagination
-    }, err => {
-      this.error = err.error;
-    });
+  getdata() {
+    this.dataService.getAllTodos(this.PagParams).subscribe(
+      (res: PaginatedResult<TodoTask[]>) => {
+        if (res.result) this.todos = res.result.data;
+        if (res.pagination) this.pagination = res.pagination;
+      },
+      (err) => {
+        this.error = err.error;
+      }
+    );
   }
 
   pagedChanged(event: any) {
-    this.pageNumber = event.page;
-    this.getTasks();
+    this.PagParams.pageNumber = event.page;
+    this.getdata();
   }
 
   toggleCompleted(todo: TodoTask) {
     todo.completed = !todo.completed;
+
+    let taskToUpdate: TodoTask = {
+      id: todo.id,
+      text: todo.text,
+      completed: todo.completed,
+      userId: todo.userId,
+    };
 
     if (todo.completed) {
       this.toastr.success('Your task is completed!');
@@ -53,30 +67,29 @@ export class TodosComponent implements OnInit {
       this.toastr.warning('Task is not completed!');
     }
 
-    this.dataService
-      .updateTodo(todo.id, {
-        id: todo.id,
-        text: todo.text,
-        completed: todo.completed,
-        userId: todo.userId,
-      }).subscribe(); // subscribe is required to trigger HttpClient request (because of observable!)
+    // subscribe is required to trigger HttpClient request (because of observable!)
+    this.dataService.updateTodo(todo.id, taskToUpdate).subscribe();
   }
 
   onSubmit(form: NgForm) {
     if (form.invalid) return;
 
+    let createTask: CreateTask = {
+      text: form.value.todo,
+      userId: 1,
+    };
+
     this.dataService
-      .addTodo({ text: form.value.todo, userId: 1 }, this.pageNumber, this.pageSize)
-      .subscribe((res: any) => {
-        // console.log(res); // interface dor this!
-        if(res.result) this.todos = res.result.tasks;
-        if(res.pagination) this.pagination = res.pagination;
+      .addTodo(createTask, this.PagParams)
+      .subscribe((res: PaginatedResult<TodoTask[]>) => {
+        if (res.result) this.todos = res.result.data;
+        if (res.pagination) this.pagination = res.pagination;
         this.error = null;
 
         Swal.fire({
           position: 'top-end',
           icon: 'success',
-          title: res.result.message,
+          title: res.result?.message,
           showConfirmButton: false,
           timer: 1000,
           width: '400px',
@@ -95,36 +108,39 @@ export class TodosComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result === undefined) return;
 
-      this.dataService
-        .updateTodo(id, {
-          id: todo.id,
-          text: result,
-          completed: todo.completed,
-          userId: 1,
-        }, this.pageNumber, this.pageSize)
-        .subscribe((res:any) => {
-          // console.log(res);
-          if(res.result) this.todos = res.result.newTasks;
-          if(res.pagination) this.pagination = res.pagination;
-          this.toastr.success(res.result.message);
-        });
+      let taskToUpdate: TodoTask = {
+        id: todo.id,
+        text: result,
+        completed: todo.completed,
+        userId: todo.userId,
+      };
+
+      this.dataService.updateTodo(id, taskToUpdate, this.PagParams).subscribe(
+        (res: PaginatedResult<TodoTask[]>) => {
+          if (res.result) this.todos = res.result.data;
+          if (res.pagination) this.pagination = res.pagination;
+          this.toastr.success(res.result?.message);
+        },
+        (err) => console.log(err)
+      );
     });
   }
 
   onDelete(id: number) {
-    this.dataService.deleteTodo(id, this.pageNumber, this.pageSize).subscribe((res: any) => {
-      //interface for res:any
-      if(res.result) this.todos = res.result.tasks;
-      if(res.pagination) this.pagination = res.pagination;
+    this.dataService
+      .deleteTodo(id, this.PagParams)
+      .subscribe((res: PaginatedResult<TodoTask[]>) => {
+        if (res.result) this.todos = res.result.data;
+        if (res.pagination) this.pagination = res.pagination;
 
-      Swal.fire({
-        position: 'top-end',
-        icon: 'success',
-        title: res.result.message,
-        showConfirmButton: false,
-        timer: 1000,
-        width: '400px',
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: res.result?.message,
+          showConfirmButton: false,
+          timer: 1000,
+          width: '400px',
+        });
       });
-    });
   }
 }
