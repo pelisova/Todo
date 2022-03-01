@@ -1,0 +1,110 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,300,500);
+*:focus {
+  outline: none;
+}
+
+.container-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, rgb(74, 215, 240), rgb(2, 228, 171));
+
+  #login-box {
+    width: 600px;
+    height: 400px;
+    background: #fff;
+    border-radius: 2px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+
+    .form-center {
+      box-sizing: border-box;
+      width: 100%;
+      padding: 10% 20%;
+
+      .form {
+        width: 100%;
+      }
+    }
+  }
+}
+
+input[type="text"],
+input[type="password"] {
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+  padding: 4px;
+  width: 100%;
+  height: 32px;
+  border: none;
+  border-bottom: 1px solid #aaa;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+  transition: 0.2s ease;
+  padding-left: 20px;
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+  border-bottom: 2px solid #16a085;
+  color: #16a085;
+  transition: 0.2s ease;
+}
+
+input[type="submit"] {
+  margin-top: 28px;
+  width: 120px;
+  height: 32px;
+  background: #16a085;
+  border: none;
+  border-radius: 2px;
+  color: #fff;
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  text-transform: uppercase;
+  transition: 0.1s ease;
+  cursor: pointer;
+}
+
+input[type="submit"]:hover,
+input[type="submit"]:focus {
+  opacity: 0.8;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  transition: 0.1s ease;
+}
+
+input[type="submit"]:active {
+  opacity: 1;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  transition: 0.1s ease;
+}
+
+.help-block {
+  color: red;
+  font-size: smaller;
+  margin-top: -5%;
+}
+
+.envelope-input,
+.lock-input {
+  display: flex;
+  align-items: baseline;
+}
+
+.glyphicon {
+  opacity: 0.5;
+}
+
+.glyphicon-eye-close,
+.glyphicon-eye-open {
+  cursor: pointer;
+  &:hover {
+    opacity: 1;
+  }
+}

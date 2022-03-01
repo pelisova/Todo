@@ -1,0 +1,69 @@
+<link
+  rel="stylesheet"
+  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"
+/>
+
+<div class="container-form">
+  <div id="login-box">
+    <div class="form-center">
+      <form class="form" [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+        <h1>Login</h1>
+
+        <div class="envelope-input">
+          <i class="glyphicon glyphicon-envelope"></i>
+          <input
+            type="text"
+            name="email"
+            placeholder="E-mail"
+            formControlName="email"
+          />
+        </div>
+        <p
+          class="help-block"
+          *ngIf="
+            !signupForm.get('email')?.valid && signupForm.get('email')?.touched
+          "
+        >
+          Please enter a valid email!
+        </p>
+
+        <div class="lock-input">
+          <i class="glyphicon glyphicon-lock"></i>
+          <input
+            [type]="show ? 'text' : 'password'"
+            name="password"
+            placeholder="Password"
+            formControlName="password"
+          />
+          <i
+            *ngIf="!show"
+            class="glyphicon glyphicon-eye-close"
+            (click)="showPassword()"
+          ></i>
+
+          <i
+            *ngIf="show"
+            class="glyphicon glyphicon-eye-open"
+            (click)="showPassword()"
+          ></i>
+        </div>
+        <p
+          class="help-block"
+          *ngIf="
+            !signupForm.get('password')?.valid &&
+            signupForm.get('password')?.touched
+          "
+        >
+          Password must contain at least 4 characters!
+        </p>
+
+        <input
+          type="submit"
+          name="signup_submit"
+          value="Login"
+          [disabled]="!signupForm.valid"
+        />
+      </form>
+    </div>
+  </div>
+</div>

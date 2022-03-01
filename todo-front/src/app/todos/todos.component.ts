@@ -31,10 +31,10 @@ export class TodosComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getdata();
+    this.getData();
   }
 
-  getdata() {
+  getData() {
     this.dataService.getAllTodos(this.PagParams).subscribe(
       (res: PaginatedResult<TodoTask[]>) => {
         if (res.result) this.todos = res.result.data;
@@ -48,7 +48,7 @@ export class TodosComponent implements OnInit {
 
   pagedChanged(event: any) {
     this.PagParams.pageNumber = event.page;
-    this.getdata();
+    this.getData();
   }
 
   toggleCompleted(todo: TodoTask) {
