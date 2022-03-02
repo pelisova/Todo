@@ -20,28 +20,42 @@
 
   .button {
     display: flex;
+    flex-direction: row;
     justify-content: flex-end;
+    width: 100%;
     margin-top: 25px;
 
-    .btn-info {
-      margin-right: 5px;
-      cursor: pointer;
+    .cancel {
+      min-width: 80px;
+      padding-right: 0px;
+      padding-left: 3px;
+      .btn-info {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        cursor: pointer;
+      }
     }
     .save {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      background: linear-gradient(
-        to right,
-        rgba(214, 97, 19, 0.644),
-        rgb(212, 20, 20)
-      );
-      color: white;
-      opacity: 0.7;
+      min-width: 80px;
+      padding-left: 3px;
+      padding-right: 3px;
+      .btn-light {
+        display: flex;
+        justify-content: center;
+        cursor: pointer;
+        width: 100%;
+        background: linear-gradient(
+          to right,
+          rgba(214, 97, 19, 0.644),
+          rgb(212, 20, 20)
+        );
+        color: white;
+        opacity: 0.7;
 
-      mat-icon {
-        margin-right: 0.3em;
+        mat-icon {
+          margin-right: 2px;
+        }
       }
     }
   }
@@ -54,4 +68,13 @@
 .text-danger {
   font-size: smaller;
   margin: 0;
+}
+
+@media only screen and (max-width: 600px) {
+  button {
+    font-size: small;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+  }
 }

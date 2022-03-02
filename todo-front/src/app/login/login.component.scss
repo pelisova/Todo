@@ -111,7 +111,24 @@ input[type="submit"]:active {
 }
 
 .btn-info {
-  margin-top: -1px;
+  margin-top: -3px;
   margin-left: 3px;
   background-color: grey;
+}
+
+@media only screen and (max-width: 600px) {
+  .btn-info {
+    margin-top: 2px;
+    margin-left: 0px;
+    background-color: grey;
+  }
+
+  #login-box {
+    width: 315px !important;
+  }
+
+  button,
+  input {
+    font-size: smaller;
+  }
 }
