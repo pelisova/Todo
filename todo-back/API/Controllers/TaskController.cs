@@ -40,6 +40,10 @@ namespace API.Controllers
         public async Task<ActionResult<PagedList<TaskDto>>> GetTasksPagination([FromQuery] PaginationParams paginationParams)
         {
             var tasks = await _taskService.GetTasksPagination(paginationParams);
+            // foreach (var item in tasks)
+            // {
+            //     Console.Write(item.ToString());
+            // }
             Response.AddPaginationHeader(tasks.CurrentPage, tasks.PageSize, tasks.TotalCount, tasks.TotalPages);
             return (!tasks.Any()) ? NotFound("Tasks are not found!") : Ok(new ResponseMessageModel<PagedList<TaskDto>>("Ok", tasks));
         } 

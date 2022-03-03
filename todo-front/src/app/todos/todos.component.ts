@@ -93,6 +93,7 @@ export class TodosComponent implements OnInit {
           showConfirmButton: false,
           timer: 1000,
           width: '400px',
+          heightAuto: false,
         });
       }); // mocking here!
 
@@ -140,6 +141,7 @@ export class TodosComponent implements OnInit {
           showConfirmButton: false,
           timer: 1000,
           width: '400px',
+          heightAuto: false,
         });
       });
   }

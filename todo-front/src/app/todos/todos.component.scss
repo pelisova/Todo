@@ -43,8 +43,6 @@
   .submit {
     display: inline-flex;
     width: 100%;
-    // flex-direction: row;
-    // flex-wrap: wrap;
 
     .form-control {
       width: 550px;
@@ -98,6 +96,14 @@
   width: 100%;
 }
 
+.d-flex {
+  position: fixed !important;
+  bottom: 7% !important;
+  right: 0 !important;
+  left: 45% !important;
+  width: 200px !important;
+}
+
 .my-pagination ::ng-deep .page-link {
   color: rgb(3, 34, 17) !important;
 }
@@ -109,4 +115,19 @@
 
 .error {
   color: rgba(216, 106, 33, 0.89);
+}
+
+.swal2-container.swal2-backdrop-show,
+.swal2-container.swal2-noanimation {
+  z-index: 1 !important;
+}
+
+@media only screen and (max-width: 600px) {
+  .d-flex {
+    position: fixed !important;
+    bottom: 7% !important;
+    right: 0 !important;
+    left: 23% !important;
+    width: 200px !important;
+  }
 }
