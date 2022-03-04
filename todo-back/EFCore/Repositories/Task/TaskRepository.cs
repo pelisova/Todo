@@ -2,8 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Core.DTOs.task;
 using Core.Entities;
 using EFCore.Context;
+using EFCore.Pagination;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
@@ -12,10 +16,12 @@ namespace EFCore.Repositories
     public class TaskRepository : ITaskRepository
     {
         private readonly DataContext _context;
+        private readonly IMapper _mapper;
 
-        public TaskRepository(DataContext context)
+        public TaskRepository(DataContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<List<TodoTask>> CreateTask(TodoTask task)
@@ -54,9 +60,11 @@ namespace EFCore.Repositories
             return await this.GetTasks();
         }
 
-        public async Task<List<TodoTask>> GetTasksPagination()
+        public async Task<PagedListRepo<TaskDto>> GetTasksPagination(PaginationParamsRepo pagination)
         {
-            return await GetTasks();
+            var query = _context.Tasks.AsQueryable();
+            var tasks = query.ProjectTo<TaskDto>(_mapper.ConfigurationProvider).AsNoTracking();
+            return await PagedListRepo<TaskDto>.CreateAsync(tasks, pagination.PageNumber, pagination.PageSize);
         }
     }
 }

@@ -6,6 +6,7 @@ using AutoMapper;
 using BusinessLayer.Helpers;
 using Core.DTOs.task;
 using Core.Entities;
+using EFCore.Pagination;
 using EFCore.Repositories;
 using Newtonsoft.Json;
 
@@ -64,10 +65,9 @@ namespace BusinessLayer.Services
             }   
         }
 
-        public async Task<PagedList<TaskDto>> GetTasksPagination(PaginationParams paginationParams)
+        public async Task<PagedListRepo<TaskDto>> GetTasksPagination(PaginationParamsRepo paginationParams)
         {
-            var tasks = (_mapper.Map<List<TaskDto>>(await _taskRepository.GetTasksPagination())).AsQueryable();
-            return PagedList<TaskDto>.CreateAsync(tasks, paginationParams.PageNumber, paginationParams.PageSize);
+            return await _taskRepository.GetTasksPagination(paginationParams);
         }
     }
 }

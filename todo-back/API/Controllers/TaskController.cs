@@ -6,6 +6,7 @@ using API.Messages;
 using BusinessLayer.Helpers;
 using BusinessLayer.Services;
 using Core.DTOs.task;
+using EFCore.Pagination;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -25,8 +26,7 @@ namespace API.Controllers
         {
             var tasks = await _taskService.CreateTask(createTaskDto, paginationParams);
             Response.AddPaginationHeader(tasks.CurrentPage, tasks.PageSize, tasks.TotalCount, tasks.TotalPages);
-            // return (!tasks.Any()) ? NotFound() : Created("201", new{Message = "Task is successfully created", tasks});
-             return (!tasks.Any()) ? NotFound() : Ok(new ResponseMessageModel<PagedList<TaskDto>>("Task is successfully created!", tasks));
+            return (!tasks.Any()) ? NotFound() : Ok(new ResponseMessageModel<PagedList<TaskDto>>("Task is successfully created!", tasks));
         }
 
         [HttpGet]
@@ -37,15 +37,11 @@ namespace API.Controllers
         } 
 
         [HttpGet("paginate")]
-        public async Task<ActionResult<PagedList<TaskDto>>> GetTasksPagination([FromQuery] PaginationParams paginationParams)
+        public async Task<ActionResult<IEnumerable<TaskDto>>> GetTasksPagination([FromQuery] PaginationParamsRepo paginationParams)
         {
             var tasks = await _taskService.GetTasksPagination(paginationParams);
-            // foreach (var item in tasks)
-            // {
-            //     Console.Write(item.ToString());
-            // }
-            Response.AddPaginationHeader(tasks.CurrentPage, tasks.PageSize, tasks.TotalCount, tasks.TotalPages);
-            return (!tasks.Any()) ? NotFound("Tasks are not found!") : Ok(new ResponseMessageModel<PagedList<TaskDto>>("Ok", tasks));
+            Response.AddPaginationHeaderRepo(tasks.CurrentPage, tasks.PageSize, tasks.TotalCount, tasks.TotalPages);
+            return (!tasks.Any()) ? NotFound("Tasks are not found!") : Ok(new ResponseMessageModel<PagedListRepo<TaskDto>>("Ok", tasks));
         } 
 
         [HttpGet("{id}")]
