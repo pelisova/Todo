@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace EFCore.Pagination
 {
-    public class PaginationParamsRepo
+    public class PaginationParams
     {
        // for pagination
         private const int MaxPageSize = 50;

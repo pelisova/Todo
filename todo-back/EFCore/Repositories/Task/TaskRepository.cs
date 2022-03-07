@@ -24,11 +24,11 @@ namespace EFCore.Repositories
             _mapper = mapper;
         }
 
-        public async Task<List<TodoTask>> CreateTask(TodoTask task)
+        public async Task<PagedResponse<TodoTask>> CreateTask(TodoTask task, PaginationParams paginationParams)
         {
             await _context.Tasks.AddAsync(task);
             _context.SaveChangesAsync();
-             return await this.GetTasks();
+             return await this.GetTasksPagination(paginationParams);
         }
 
         public async Task<TodoTask> GetTaskById(int id)
@@ -42,14 +42,14 @@ namespace EFCore.Repositories
         }
 
         
-        public async Task<List<TodoTask>> UpdateTask(TodoTask task)
+        public async Task<PagedResponse<TodoTask>> UpdateTask(TodoTask task, PaginationParams paginationParams)
         {
             _context.Tasks.Update(task);
             await _context.SaveChangesAsync();
-            return await this.GetTasks();
+            return await this.GetTasksPagination(paginationParams);
         }
 
-        public async Task<List<TodoTask>> DeleteTask(int id)
+        public async Task<PagedResponse<TodoTask>> DeleteTask(int id, PaginationParams paginationParams)
         {
             var task = await this.GetTaskById(id);
             if(task == null) {
@@ -57,14 +57,14 @@ namespace EFCore.Repositories
             }
             _context.Tasks.Remove(task);
             await _context.SaveChangesAsync();
-            return await this.GetTasks();
+            return await this.GetTasksPagination(paginationParams);
         }
 
-        public async Task<PagedListRepo<TaskDto>> GetTasksPagination(PaginationParamsRepo pagination)
+        public async Task<PagedResponse<TodoTask>> GetTasksPagination(PaginationParams paginationParams)
         {
-            var query = _context.Tasks.AsQueryable();
-            var tasks = query.ProjectTo<TaskDto>(_mapper.ConfigurationProvider).AsNoTracking();
-            return await PagedListRepo<TaskDto>.CreateAsync(tasks, pagination.PageNumber, pagination.PageSize);
+            var query = _context.Tasks.OrderBy(t => t.Id).AsQueryable();
+            // var tasks = query.ProjectTo<TaskDto>(_mapper.ConfigurationProvider).AsNoTracking();
+            return await PagedResponse<TodoTask>.CreateAsync(query, paginationParams.PageNumber, paginationParams.PageSize);
         }
     }
 }

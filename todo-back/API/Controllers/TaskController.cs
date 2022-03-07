@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Messages;
-using BusinessLayer.Helpers;
 using BusinessLayer.Services;
 using Core.DTOs.task;
 using EFCore.Pagination;
@@ -22,11 +21,11 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<PagedList<TaskDto>>> CreateTask([FromBody] CreateTaskDto createTaskDto, [FromQuery] PaginationParams paginationParams)
+        public async Task<ActionResult<PagedResponse<TaskDto>>> CreateTask([FromBody] CreateTaskDto createTaskDto, [FromQuery] PaginationParams paginationParams)
         {
             var tasks = await _taskService.CreateTask(createTaskDto, paginationParams);
-            Response.AddPaginationHeader(tasks.CurrentPage, tasks.PageSize, tasks.TotalCount, tasks.TotalPages);
-            return (!tasks.Any()) ? NotFound() : Ok(new ResponseMessageModel<PagedList<TaskDto>>("Task is successfully created!", tasks));
+            Response.AddPaginationHeader(tasks.PaginationResult.CurrentPage, tasks.PaginationResult.PageSize, tasks.PaginationResult.TotalCount, tasks.PaginationResult.TotalPages);
+            return (!tasks.Items.Any()) ? NotFound() : Ok(new ResponseMessageModel<PagedResponse<TaskDto>>("Task is successfully created!", tasks));
         }
 
         [HttpGet]
@@ -37,11 +36,11 @@ namespace API.Controllers
         } 
 
         [HttpGet("paginate")]
-        public async Task<ActionResult<IEnumerable<TaskDto>>> GetTasksPagination([FromQuery] PaginationParamsRepo paginationParams)
+        public async Task<ActionResult<PagedResponse<TaskDto>>> GetTasksPagination([FromQuery] PaginationParams paginationParams)
         {
             var tasks = await _taskService.GetTasksPagination(paginationParams);
-            Response.AddPaginationHeaderRepo(tasks.CurrentPage, tasks.PageSize, tasks.TotalCount, tasks.TotalPages);
-            return (!tasks.Any()) ? NotFound("Tasks are not found!") : Ok(new ResponseMessageModel<PagedListRepo<TaskDto>>("Ok", tasks));
+            Response.AddPaginationHeader(tasks.PaginationResult.CurrentPage, tasks.PaginationResult.PageSize, tasks.PaginationResult.TotalCount, tasks.PaginationResult.TotalPages);
+            return (!tasks.Items.Any()) ? NotFound("Tasks are not found!") : Ok(new ResponseMessageModel<PagedResponse<TaskDto>>("Ok", tasks));
         } 
 
         [HttpGet("{id}")]
@@ -52,7 +51,7 @@ namespace API.Controllers
         } 
 
         [HttpPatch("{id}")]
-        public async Task<ActionResult<PagedList<TaskDto>>> UpdateTask(int id, [FromBody] UpdateTaskDto updateTaskDto, [FromQuery] PaginationParams paginationParams)
+        public async Task<ActionResult<PagedResponse<TaskDto>>> UpdateTask(int id, [FromBody] UpdateTaskDto updateTaskDto, [FromQuery] PaginationParams paginationParams)
         {
             if(id != updateTaskDto.Id) return BadRequest("Invalid task to update!");
 
@@ -60,10 +59,8 @@ namespace API.Controllers
             {
                 // Console.Write(JsonConvert.SerializeObject(updateTaskDto));
                 var tasks = await _taskService.UpdateTask(id, updateTaskDto, paginationParams);
-                Response.AddPaginationHeader(tasks.CurrentPage, tasks.PageSize, tasks.TotalCount, tasks.TotalPages);
-                return (!tasks.Any()) ?
-                     NotFound("Oops! Task is not found!") : 
-                     Ok(new ResponseMessageModel<PagedList<TaskDto>>("Task is successfully updated!", tasks));   
+                Response.AddPaginationHeader(tasks.PaginationResult.CurrentPage, tasks.PaginationResult.PageSize, tasks.PaginationResult.TotalCount, tasks.PaginationResult.TotalPages);
+                return (!tasks.Items.Any()) ? NotFound("Oops! Task is not found!") :Ok(new ResponseMessageModel<PagedResponse<TaskDto>>("Ok", tasks));
             }
             catch (System.Exception ex)
             {
@@ -72,13 +69,13 @@ namespace API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<PagedList<TaskDto>>> DeleteTask(int id, [FromQuery] PaginationParams paginationParams)
+        public async Task<ActionResult<PagedResponse<TaskDto>>> DeleteTask(int id, [FromQuery] PaginationParams paginationParams)
         {
             try
             {
                 var tasks = await _taskService.DeleteTask(id, paginationParams);
-                Response.AddPaginationHeader(tasks.CurrentPage, tasks.PageSize, tasks.TotalCount, tasks.TotalPages);
-                return Accepted(new ResponseMessageModel<PagedList<TaskDto>>("Task is successfully deleted!", tasks));
+                Response.AddPaginationHeader(tasks.PaginationResult.CurrentPage, tasks.PaginationResult.PageSize, tasks.PaginationResult.TotalCount, tasks.PaginationResult.TotalPages);
+                return Accepted(new ResponseMessageModel<PagedResponse<TaskDto>>("Task is successfully deleted!", tasks));
             }
             catch (System.Exception ex)
             {

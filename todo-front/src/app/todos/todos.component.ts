@@ -37,7 +37,7 @@ export class TodosComponent implements OnInit {
   getData() {
     this.dataService.getAllTodos(this.PagParams).subscribe(
       (res: PaginatedResult<TodoTask[]>) => {
-        if (res.result) this.todos = res.result.data;
+        if (res.result) this.todos = res.result.data.items;
         if (res.pagination) this.pagination = res.pagination;
       },
       (err) => {
@@ -82,7 +82,7 @@ export class TodosComponent implements OnInit {
     this.dataService
       .addTodo(createTask, this.PagParams)
       .subscribe((res: PaginatedResult<TodoTask[]>) => {
-        if (res.result) this.todos = res.result.data;
+        if (res.result) this.todos = res.result.data.items;
         if (res.pagination) this.pagination = res.pagination;
         this.error = null;
 
@@ -118,7 +118,7 @@ export class TodosComponent implements OnInit {
 
       this.dataService.updateTodo(id, taskToUpdate, this.PagParams).subscribe(
         (res: PaginatedResult<TodoTask[]>) => {
-          if (res.result) this.todos = res.result.data;
+          if (res.result) this.todos = res.result.data.items;
           if (res.pagination) this.pagination = res.pagination;
           this.toastr.success(res.result?.message);
         },
@@ -131,7 +131,7 @@ export class TodosComponent implements OnInit {
     this.dataService
       .deleteTodo(id, this.PagParams)
       .subscribe((res: PaginatedResult<TodoTask[]>) => {
-        if (res.result) this.todos = res.result.data;
+        if (res.result) this.todos = res.result.data.items;
         if (res.pagination) this.pagination = res.pagination;
 
         Swal.fire({

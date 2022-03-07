@@ -12,5 +12,10 @@ export class PaginatedResult<T> {
 
 export type Result<T> = {
   message: string | undefined;
-  data: T;
+  data: ResultPag<T>;
+};
+
+export type ResultPag<T> = {
+  items: T;
+  pagination: Pagination;
 };

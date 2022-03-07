@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using BusinessLayer.Helpers;
 using Core.DTOs.task;
 using Core.Entities;
 using EFCore.Pagination;
 using EFCore.Repositories;
-using Newtonsoft.Json;
 
 namespace BusinessLayer.Services
 {
@@ -25,10 +23,10 @@ namespace BusinessLayer.Services
             _mapper = mapper;
         }
 
-        public async Task<PagedList<TaskDto>> CreateTask(CreateTaskDto createTaskDto, PaginationParams paginationParams)
+        public async Task<PagedResponse<TaskDto>> CreateTask(CreateTaskDto createTaskDto, PaginationParams paginationParams)
         {
-            var tasks = (_mapper.Map<List<TaskDto>>(await _taskRepository.CreateTask(_mapper.Map<TodoTask>(createTaskDto)))).AsQueryable();
-            return PagedList<TaskDto>.CreateAsync(tasks, paginationParams.PageNumber, paginationParams.PageSize);
+            var task = _mapper.Map<TodoTask>(createTaskDto);
+            return _mapper.Map<PagedResponse<TaskDto>>(await _taskRepository.CreateTask(task, paginationParams));
         }
 
         public async Task<TaskDto> GetTaskById(int id)
@@ -41,22 +39,20 @@ namespace BusinessLayer.Services
             return _mapper.Map<List<TaskDto>>(await _taskRepository.GetTasks());
         }
 
-        public async Task<PagedList<TaskDto>> UpdateTask(int id, UpdateTaskDto updateTaskDto, PaginationParams paginationParams)
+        public async Task<PagedResponse<TaskDto>> UpdateTask(int id, UpdateTaskDto updateTaskDto, PaginationParams paginationParams)
         {
             var task = await _taskRepository.GetTaskById(id);
             var user = await _userRepository.GetUserById(updateTaskDto.UserId);
             if(user.UserId != task.UserId) throw new Exception("You do not have access for this resource!");
             var taskToUpdate = _mapper.Map<UpdateTaskDto, TodoTask>(updateTaskDto, task);
-            var tasks = (_mapper.Map<List<TaskDto>>(await _taskRepository.UpdateTask(taskToUpdate))).AsQueryable();
-            return PagedList<TaskDto>.CreateAsync(tasks, paginationParams.PageNumber, paginationParams.PageSize);
+            return _mapper.Map<PagedResponse<TaskDto>>(await _taskRepository.UpdateTask(taskToUpdate, paginationParams));
         }
 
-        public async Task<PagedList<TaskDto>> DeleteTask(int id, PaginationParams paginationParams)
+        public async Task<PagedResponse<TaskDto>> DeleteTask(int id, PaginationParams paginationParams)
         {
             try
             {
-               var tasks = (_mapper.Map<List<TaskDto>>(await _taskRepository.DeleteTask(id))).AsQueryable();
-               return PagedList<TaskDto>.CreateAsync(tasks, paginationParams.PageNumber, paginationParams.PageSize);
+               return _mapper.Map<PagedResponse<TaskDto>>(await _taskRepository.DeleteTask(id, paginationParams));
             }
             catch (System.Exception ex)
             {
@@ -65,9 +61,9 @@ namespace BusinessLayer.Services
             }   
         }
 
-        public async Task<PagedListRepo<TaskDto>> GetTasksPagination(PaginationParamsRepo paginationParams)
+        public async Task<PagedResponse<TaskDto>> GetTasksPagination(PaginationParams paginationParams)
         {
-            return await _taskRepository.GetTasksPagination(paginationParams);
+            return _mapper.Map<PagedResponse<TaskDto>>(await _taskRepository.GetTasksPagination(paginationParams));
         }
     }
 }
