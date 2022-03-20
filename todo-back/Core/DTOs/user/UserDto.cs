@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 using Core.DTOs.task;
 using Core.Entities;
 
-namespace Core.DTOs
+namespace Core.DTOs.user
 {
     public class UserDto
     {
-        public string? FirstName { get; set; }
+        public string? UserName { get; set; }
         public string? Email { get; set; }
-        public List<TaskDto>? Tasks {get; set;}
+        public List<TaskDto>? Tasks { get; set; }
     }
 }

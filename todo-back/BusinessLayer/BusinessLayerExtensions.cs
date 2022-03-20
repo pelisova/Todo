@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BusinessLayer.Mappings;
 using BusinessLayer.Services;
+using BusinessLayer.Services.Token;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BusinessLayer;
@@ -19,7 +20,7 @@ public static class BusinessLayerExtensions
 
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ITaskService, TaskService>();
-            // services.AddScoped<IEmployeeService, EmployeeService>();
+            services.AddScoped<ITokenService, TokenService>();
             // services.AddScoped<IBusinessService, BusinessService>();
 
             services.AddAutoMapper(c => c.AddProfiles(mapperList), typeof(List<Profile>));

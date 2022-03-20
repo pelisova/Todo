@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Core.DTOs;
+using Core.DTOs.user;
 using Core.Entities;
 using EFCore.Context;
 using Microsoft.EntityFrameworkCore;
@@ -36,7 +36,7 @@ namespace EFCore.Repositories
 
         public async Task<User> GetUserById(int id)
         {
-            return await _context.Users.Include(t => t.Tasks).FirstOrDefaultAsync(u => u.UserId == id); 
+            return await _context.Users.Include(t => t.Tasks).FirstOrDefaultAsync(u => u.Id == id); 
         }
 
         public async Task<User> UpdateUser(User user)
@@ -48,7 +48,7 @@ namespace EFCore.Repositories
 
         public async Task DeleteUser(int id)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == id);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
             
             if(user != null){
                 _context.Users.Remove(user);

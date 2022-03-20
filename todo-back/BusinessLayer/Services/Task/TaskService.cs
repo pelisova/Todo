@@ -43,7 +43,7 @@ namespace BusinessLayer.Services
         {
             var task = await _taskRepository.GetTaskById(id);
             var user = await _userRepository.GetUserById(updateTaskDto.UserId);
-            if(user.UserId != task.UserId) throw new Exception("You do not have access for this resource!");
+            if(user.Id != task.UserId) throw new Exception("You do not have access for this resource!");
             var taskToUpdate = _mapper.Map<UpdateTaskDto, TodoTask>(updateTaskDto, task);
             return _mapper.Map<PagedResponse<TaskDto>>(await _taskRepository.UpdateTask(taskToUpdate, paginationParams));
         }

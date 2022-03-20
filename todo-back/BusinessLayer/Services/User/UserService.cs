@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Core.DTOs;
+using BusinessLayer.Services.Token;
+using Core.DTOs.user;
 using Core.Entities;
 using EFCore.Repositories;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace BusinessLayer.Services
 {
@@ -13,22 +16,56 @@ namespace BusinessLayer.Services
     {
         private readonly IMapper _mapper;
         private readonly IUserRepository _userRepository;
+        private readonly ITokenService _tokenService;
 
-        public UserService(IMapper mapper, IUserRepository userRepository)
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
+
+        public UserService(IMapper mapper, IUserRepository userRepository, ITokenService tokenService, UserManager<User> userManager, SignInManager<User> signInManager)
         {
             this._mapper = mapper;
             this._userRepository = userRepository;
+            this._tokenService = tokenService;
+            this._userManager = userManager;
+            this._signInManager = signInManager;
         }
 
         public async Task<UserDto> CreateUser(CreateUserDto createUserDto)
         {
-            return _mapper.Map<UserDto>(await _userRepository.CreateUser(_mapper.Map<User>(createUserDto)));
+            var user = _mapper.Map<User>(createUserDto);
+
+            var result = await _userManager.CreateAsync(user, createUserDto.Password);
+
+            if (!result.Succeeded) throw new Exception(result.ToString());
+
+            await _userManager.AddToRoleAsync(user, "Member");
+
+            return new UserDto
+            {
+                UserName = user.UserName,
+                Email = user.Email
+            };
+        }
+
+        public async Task<RegisteredUserDto> LoginUser(LoginUserDto loginUserDto)
+        {
+            var user = await _userManager.Users.Include(t => t.Tasks).SingleOrDefaultAsync(x => x.Email == loginUserDto.Email);
+            if (user == null) throw new Exception("Invalid email!");
+
+            var result = await _signInManager.CheckPasswordSignInAsync(user, loginUserDto.Password, false);
+            if (!result.Succeeded) throw new Exception("Invalid password!");
+
+            return new RegisteredUserDto
+            {
+                Email = user.Email,
+                Token = await _tokenService.CreateToken(user)
+            };
         }
 
         public async Task<List<UserDto>> GetUsers()
         {
             //  return _mapper.Map<List<UserDto>>(await _userRepository.GetUsers());
-             return await _userRepository.GetUsers();
+            return await _userRepository.GetUsers();
         }
 
         public async Task<UserDto> GetUserById(int id)
@@ -38,14 +75,14 @@ namespace BusinessLayer.Services
 
         public async Task<UserDto> UpdateUser(int id, UpdateUserDto updateUserDto)
         {
-           var user = await _userRepository.GetUserById(id); 
-           var userToUpdate = _mapper.Map<UpdateUserDto, User>(updateUserDto, user);
-           return _mapper.Map<UserDto>(await _userRepository.UpdateUser(userToUpdate));
+            var user = await _userRepository.GetUserById(id);
+            var userToUpdate = _mapper.Map<UpdateUserDto, User>(updateUserDto, user);
+            return _mapper.Map<UserDto>(await _userRepository.UpdateUser(userToUpdate));
         }
 
         public async Task DeleteUser(int id)
         {
-           
+
             try
             {
                 await _userRepository.DeleteUser(id);
@@ -54,8 +91,9 @@ namespace BusinessLayer.Services
             {
                 throw ex;
             }
-            
+
         }
+
 
     }
 }

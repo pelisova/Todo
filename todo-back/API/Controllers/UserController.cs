@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using BusinessLayer.Services;
 using Core.DTOs;
+using Core.DTOs.user;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -17,15 +19,8 @@ namespace API.Controllers
             _userService = userService;
         }
 
-        [HttpPost]
-        public async Task<ActionResult<UserDto>> CreateUser(CreateUserDto createUserDto)
-        {
-            var user = await _userService.CreateUser(createUserDto);
-
-            return (user == null) ? NotFound() : Created("User is successfully created", user);
-        }
-
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<List<UserDto>>> GetUsers()
         {
             var users = await _userService.GetUsers();
@@ -34,6 +29,7 @@ namespace API.Controllers
         } 
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<UserDto>> GetUserById(int id) 
         {
             var user = await _userService.GetUserById(id);
