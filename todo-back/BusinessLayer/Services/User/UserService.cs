@@ -38,7 +38,9 @@ namespace BusinessLayer.Services
 
             if (!result.Succeeded) throw new Exception(result.ToString());
 
-            await _userManager.AddToRoleAsync(user, "Member");
+            var resultRole = await _userManager.AddToRoleAsync(user, "Member");
+
+            if (!resultRole.Succeeded) throw new Exception(result.ToString());
 
             return new UserDto
             {
@@ -53,7 +55,7 @@ namespace BusinessLayer.Services
             if (user == null) throw new Exception("Invalid email!");
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginUserDto.Password, false);
-            if (!result.Succeeded) throw new Exception("Invalid password!");
+            if (!result.Succeeded) throw new Exception("Invalid email!", new Exception(result.ToString()));
 
             return new RegisteredUserDto
             {

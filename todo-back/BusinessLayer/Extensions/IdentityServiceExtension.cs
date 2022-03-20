@@ -15,7 +15,7 @@ namespace BusinessLayer.Extensions
 {
     public static class IdentityServiceExtension
     {
-        public static IServiceCollection AddIdentityServices(this IServiceCollection services, 
+        public static IServiceCollection AddIdentityServices(this IServiceCollection services,
             IConfiguration config)
         {
             //identity validation rules
@@ -37,10 +37,10 @@ namespace BusinessLayer.Extensions
                 .AddRoleValidator<RoleValidator<Role>>()
                 .AddEntityFrameworkStores<DataContext>();
 
-            
-             //authentication middleware (scheme)
+
+            //authentication middleware (scheme)
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options => 
+                .AddJwtBearer(options =>
                 {
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
@@ -50,6 +50,13 @@ namespace BusinessLayer.Extensions
                         ValidateAudience = false,
                     };
                 });
+
+            //policy based authorization
+            services.AddAuthorization(opt =>
+            {
+                opt.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
+                opt.AddPolicy("RequireMemberRole", policy => policy.RequireRole("Member"));
+            });
 
             return services;
         }

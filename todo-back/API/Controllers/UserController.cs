@@ -20,17 +20,17 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<List<UserDto>>> GetUsers()
         {
             var users = await _userService.GetUsers();
             // return Ok(users);
             return (!users.Any()) ? NotFound("Users are not found!") : Ok(users);
-        } 
+        }
 
         [HttpGet("{id}")]
-        [Authorize]
-        public async Task<ActionResult<UserDto>> GetUserById(int id) 
+        [Authorize(Roles = "Member, Admin")]
+        public async Task<ActionResult<UserDto>> GetUserById(int id)
         {
             var user = await _userService.GetUserById(id);
 
@@ -38,10 +38,11 @@ namespace API.Controllers
         }
 
         // TODO
+        [Authorize(Policy = "RequireAdminRole")]
         [HttpPatch("{id}")]
         public async Task<ActionResult<UserDto>> UpdateUser(int id, [FromBody] UpdateUserDto updateUserDto)
         {
-            if(id != updateUserDto.Id) return BadRequest("Invalid user to update!");
+            if (id != updateUserDto.Id) return BadRequest("Invalid user to update!");
 
             var newUser = await _userService.UpdateUser(id, updateUserDto);
 
@@ -60,7 +61,7 @@ namespace API.Controllers
             {
                 return BadRequest(ex.Message);
             }
-            
+
         }
 
 
