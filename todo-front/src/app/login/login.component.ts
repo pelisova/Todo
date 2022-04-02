@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { LoginUser } from '../_models/user';
+import { UserLogin } from '../_models/userResponse';
+import { AccountService } from '../_services/account.service';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +15,11 @@ export class LoginComponent implements OnInit {
   signupForm!: FormGroup;
   show: boolean = false;
 
-  constructor(private toastr: ToastrService) {}
+  constructor(
+    private accountService: AccountService,
+    private router: Router,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit(): void {
     this.signupForm = new FormGroup({
@@ -28,7 +36,26 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log('You are successfully logged in!');
-    this.signupForm.reset();
+    const user = this.signupForm.value;
+
+    let loginUser: LoginUser = {
+      email: user.email,
+      password: user.password,
+    };
+
+    this.accountService.login(loginUser).subscribe(
+      (res: UserLogin) => {
+        if (res) {
+          this.signupForm.reset();
+          this.router.navigateByUrl('/home');
+          setTimeout(() => {
+            this.toastr.success(res.message);
+          }, 500);
+        }
+      },
+      (error) => {
+        if (error) this.toastr.warning('Username or Email are incorrect!');
+      }
+    );
   }
 }

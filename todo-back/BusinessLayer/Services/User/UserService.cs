@@ -30,7 +30,7 @@ namespace BusinessLayer.Services
             this._signInManager = signInManager;
         }
 
-        public async Task<UserDto> CreateUser(CreateUserDto createUserDto)
+        public async Task<RegisteredUserDto> CreateUser(CreateUserDto createUserDto)
         {
             var user = _mapper.Map<User>(createUserDto);
 
@@ -42,25 +42,30 @@ namespace BusinessLayer.Services
 
             if (!resultRole.Succeeded) throw new Exception(result.ToString());
 
-            return new UserDto
+            return new RegisteredUserDto
             {
                 UserName = user.UserName,
                 Email = user.Email
             };
         }
 
-        public async Task<RegisteredUserDto> LoginUser(LoginUserDto loginUserDto)
+        public async Task<LoggedInUserDto> LoginUser(LoginUserDto loginUserDto)
         {
-            var user = await _userManager.Users.Include(t => t.Tasks).SingleOrDefaultAsync(x => x.Email == loginUserDto.Email);
+            var user = await _userManager.Users.SingleOrDefaultAsync(x => x.Email == loginUserDto.Email);
             if (user == null) throw new Exception("Invalid email!");
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginUserDto.Password, false);
             if (!result.Succeeded) throw new Exception("Invalid email!", new Exception(result.ToString()));
 
-            return new RegisteredUserDto
+            var roles = await _userManager.GetRolesAsync(user);
+
+            return new LoggedInUserDto
             {
+                Id = user.Id,
+                Username = user.UserName,
                 Email = user.Email,
-                Token = await _tokenService.CreateToken(user)
+                Roles = roles,
+                Token = await _tokenService.CreateToken(user),
             };
         }
 
@@ -96,6 +101,21 @@ namespace BusinessLayer.Services
 
         }
 
+        public async Task<LoggedInUserDto> GetUserByEmail(string email)
+        {
+            var user = await _userRepository.GetUserByEmail(email);
+            if (user == null) throw new Exception("Authentication failed");
 
+            var roles = await _userManager.GetRolesAsync(user);
+
+            return new LoggedInUserDto
+            {
+                Id = user.Id,
+                Username = user.UserName,
+                Email = user.Email,
+                Roles = roles,
+                Token = await _tokenService.CreateToken(user),
+            };
+        }
     }
 }

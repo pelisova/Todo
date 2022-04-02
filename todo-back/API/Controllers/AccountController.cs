@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using API.Messages;
 using BusinessLayer.Services;
 using Core.DTOs.user;
 using Microsoft.AspNetCore.Mvc;
@@ -18,12 +19,12 @@ namespace API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<UserDto>> RegisterUser(CreateUserDto createUserDto)
+        public async Task<ActionResult<RegisteredUserDto>> RegisterUser(CreateUserDto createUserDto)
         {
             try
             {
                 var user = await _userService.CreateUser(createUserDto);
-                return (user == null) ? NotFound() : Created("User is successfully created", user);
+                return (user == null) ? NotFound() : Ok(new ResponseMessageModel<RegisteredUserDto>("Account is successfully created!", user));
             }
             catch (System.Exception ex)
             {
@@ -32,16 +33,16 @@ namespace API.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<RegisteredUserDto>> LoginUser(LoginUserDto loginUserDto)
+        public async Task<ActionResult<LoggedInUserDto>> LoginUser(LoginUserDto loginUserDto)
         {
             try
             {
                 var user = await _userService.LoginUser(loginUserDto);
-                return (user == null) ? NotFound() : Ok(user);
+                return (user == null) ? NotFound() : Ok(new ResponseMessageModel<LoggedInUserDto>("You are successfully logged in.", user));
             }
             catch (System.Exception ex)
             {
-                return BadRequest(ex.InnerException.Message + ". " + ex.Message);
+                return BadRequest(ex.InnerException?.Message + ". " + ex.Message);
             }
 
         }

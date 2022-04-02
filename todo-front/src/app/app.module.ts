@@ -15,13 +15,15 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { ToastrModule } from 'ngx-toastr';
 import { MatDialogModule } from '@angular/material/dialog';
 import { TodoDialogComponent } from './todo-dialog/todo-dialog.component';
-import { ToolTipDirective } from './shared/tool-tip.directive';
-import { HttpClientModule } from '@angular/common/http';
+import { ToolTipDirective } from './_shared/tool-tip.directive';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { RegisterComponent } from './register/register.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { LoginComponent } from './login/login.component';
 import { WelcomeComponent } from './welcome/welcome.component';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { JwtInterceptor } from './_interceptors/jwt.interceptor';
 
 @NgModule({
   declarations: [
@@ -49,7 +51,7 @@ import { WelcomeComponent } from './welcome/welcome.component';
     MatDialogModule,
     SweetAlert2Module.forRoot(),
     ToastrModule.forRoot({
-      timeOut: 500,
+      timeOut: 1500,
       positionClass: 'toast-top-right',
       preventDuplicates: false,
       easing: 'easi-in',
@@ -57,8 +59,11 @@ import { WelcomeComponent } from './welcome/welcome.component';
       // progressAnimation: 'increasing',
     }),
     PaginationModule.forRoot(),
+    BsDropdownModule.forRoot(),
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

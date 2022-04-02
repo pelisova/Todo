@@ -9,11 +9,12 @@ namespace BusinessLayer.Services
 {
     public interface IUserService
     {
-        Task<UserDto> CreateUser(CreateUserDto createUserDto);
+        Task<RegisteredUserDto> CreateUser(CreateUserDto createUserDto);
 
-        Task<RegisteredUserDto> LoginUser(LoginUserDto loginUserDto);
+        Task<LoggedInUserDto> LoginUser(LoginUserDto loginUserDto);
         Task<List<UserDto>> GetUsers();
         Task<UserDto> GetUserById(int id);
+        Task<LoggedInUserDto> GetUserByEmail(string email);
         Task<UserDto> UpdateUser(int id, UpdateUserDto updateUserDto);
         Task DeleteUser(int id);
     }

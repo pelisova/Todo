@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
-import { CreateTask, PagParams, TodoTask } from '../models/model';
-import { PaginatedResult, Pagination } from '../models/pagination';
-import { DataService } from '../services/data.service';
+import { CreateTask, PagParams, TodoTask } from '../_models/model';
+import { PaginatedResult, Pagination } from '../_models/pagination';
+import { AccountService } from '../_services/account.service';
+import { DataService } from '../_services/data.service';
 import { TodoDialogComponent } from '../todo-dialog/todo-dialog.component';
 
 @Component({
@@ -27,7 +29,9 @@ export class TodosComponent implements OnInit {
   constructor(
     private dataService: DataService,
     private toastr: ToastrService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    public accountService: AccountService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -76,7 +80,7 @@ export class TodosComponent implements OnInit {
 
     let createTask: CreateTask = {
       text: form.value.todo,
-      userId: 1,
+      userId: 2,
     };
 
     this.dataService
@@ -144,5 +148,10 @@ export class TodosComponent implements OnInit {
           heightAuto: false,
         });
       });
+  }
+
+  logout() {
+    this.accountService.logout();
+    this.router.navigateByUrl('/login');
   }
 }

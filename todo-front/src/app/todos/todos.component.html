@@ -1,5 +1,44 @@
 <section class="section">
-  <h1 class="mat-h1">Todos</h1>
+  <div class="container-flex">
+    <div class="mat-h1">
+      <h1>Todos</h1>
+    </div>
+
+    <div
+      *ngIf="accountService.currentUser$ | async as user"
+      class="dropdown"
+      dropdown
+    >
+      <div class="drop-button">
+        <button
+          id="button-animated"
+          dropdownToggle
+          type="button"
+          class="btn btn-primary btn-color dropdown-toggle"
+          aria-controls="dropdown-animated"
+        >
+          Welcome {{ user.username }} <span class="caret"></span>
+        </button>
+      </div>
+      <div class="drop-ul">
+        <ul
+          id="dropdown-animated"
+          *dropdownMenu
+          class="dropdown-menu"
+          role="menu"
+          aria-labelledby="button-animated"
+        >
+          <li role="menuitem"><a class="dropdown-item">Profile</a></li>
+          <li role="menuitem">
+            <a class="dropdown-item">Preview</a>
+          </li>
+          <li role="menuitem">
+            <a class="dropdown-item" (click)="logout()">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
 </section>
 
 <div class="add-todo-container">

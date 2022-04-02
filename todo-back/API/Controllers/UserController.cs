@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BusinessLayer.Extensions;
 using BusinessLayer.Services;
 using Core.DTOs;
 using Core.DTOs.user;
@@ -19,8 +20,8 @@ namespace API.Controllers
             _userService = userService;
         }
 
-        [HttpGet]
         [Authorize(Roles = "Admin")]
+        [HttpGet]
         public async Task<ActionResult<List<UserDto>>> GetUsers()
         {
             var users = await _userService.GetUsers();
@@ -28,13 +29,29 @@ namespace API.Controllers
             return (!users.Any()) ? NotFound("Users are not found!") : Ok(users);
         }
 
-        [HttpGet("{id}")]
         [Authorize(Roles = "Member, Admin")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<UserDto>> GetUserById(int id)
         {
             var user = await _userService.GetUserById(id);
 
             return (user == null) ? NotFound("User is not found!") : Ok(user);
+        }
+
+        [Authorize]
+        [HttpGet("email")]
+        public async Task<ActionResult<LoggedInUserDto>> GetUserByEmail()
+        {
+            try
+            {
+                var email = User.GetUserEmail();
+                var user = await _userService.GetUserByEmail(email);
+                return Ok(user);
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // TODO

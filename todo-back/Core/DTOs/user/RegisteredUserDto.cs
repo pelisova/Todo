@@ -7,8 +7,8 @@ namespace Core.DTOs.user
 {
     public class RegisteredUserDto
     {
+        public string? UserName { get; set; }
         public string? Email { get; set; }
-        public string? Token {get; set;}
-        
+
     }
 }

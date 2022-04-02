@@ -8,7 +8,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { TodoTask } from '../models/model';
+import { TodoTask } from '../_models/model';
 // import tippy from 'tippy.js';
 
 @Component({

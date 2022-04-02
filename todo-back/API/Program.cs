@@ -72,7 +72,6 @@ using (var scope = app.Services.CreateScope())
         var logger = builder.Services.BuildServiceProvider().GetRequiredService<ILogger<Program>>();
         logger.LogError(ex, "An error occurred during migration");
     }
-
 }
 
 app.Run();

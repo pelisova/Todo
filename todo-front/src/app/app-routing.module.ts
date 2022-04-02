@@ -5,12 +5,22 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { RegisterComponent } from './register/register.component';
 import { TodosComponent } from './todos/todos.component';
 import { WelcomeComponent } from './welcome/welcome.component';
+import { AdminGuard } from './_guards/admin.guard';
+import { AuthGuard } from './_guards/auth.guard';
+import { LoginGuard } from './_guards/login.guard';
 
 const routes: Routes = [
-  { path: '', component: TodosComponent },
+  { path: '', redirectTo: '/welcome', pathMatch: 'full' },
+  {
+    path: '',
+    runGuardsAndResolvers: 'always',
+    canActivate: [AuthGuard],
+    children: [{ path: 'home', component: TodosComponent }],
+  },
+
   { path: 'welcome', component: WelcomeComponent },
-  { path: 'register', component: RegisterComponent },
-  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent, canActivate: [LoginGuard] },
+  { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
   { path: '**', component: NotFoundComponent },
 ];
 

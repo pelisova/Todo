@@ -16,8 +16,8 @@ namespace EFCore.Repositories
         private readonly IMapper _mapper;
         public UserRepository(DataContext context, IMapper mapper)
         {
-             _context = context;
-             _mapper = mapper;
+            _context = context;
+            _mapper = mapper;
         }
 
         public async Task<User> CreateUser(User user)
@@ -36,7 +36,7 @@ namespace EFCore.Repositories
 
         public async Task<User> GetUserById(int id)
         {
-            return await _context.Users.Include(t => t.Tasks).FirstOrDefaultAsync(u => u.Id == id); 
+            return await _context.Users.Include(t => t.Tasks).FirstOrDefaultAsync(u => u.Id == id);
         }
 
         public async Task<User> UpdateUser(User user)
@@ -49,16 +49,22 @@ namespace EFCore.Repositories
         public async Task DeleteUser(int id)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
-            
-            if(user != null){
+
+            if (user != null)
+            {
                 _context.Users.Remove(user);
                 await _context.SaveChangesAsync();
             }
-            else{
+            else
+            {
                 throw new Exception("User is not found!");
             }
-            
+
         }
 
+        public async Task<User> GetUserByEmail(string email)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+        }
     }
 }

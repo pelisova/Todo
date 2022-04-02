@@ -2,9 +2,9 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { map } from 'rxjs/operators';
-import { CreateTask, PagParams, TodoTask } from '../models/model';
+import { CreateTask, PagParams, TodoTask } from '../_models/model';
 import { Observable } from 'rxjs';
-import { PaginatedResult } from '../models/pagination';
+import { PaginatedResult } from '../_models/pagination';
 
 @Injectable({
   providedIn: 'root',

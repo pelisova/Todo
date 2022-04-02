@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { AccountService } from '../services/account.service';
+import { CreateUser } from '../_models/user';
+import { UserRegister } from '../_models/userResponse';
+import { AccountService } from '../_services/account.service';
 
 @Component({
   selector: 'app-register',
@@ -14,12 +17,15 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     private accountService: AccountService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private route: Router
   ) {}
 
   ngOnInit(): void {
     this.signupForm = new FormGroup({
-      username: new FormControl(null, Validators.required),
+      firstName: new FormControl(null, Validators.required),
+      lastName: new FormControl(null, Validators.required),
+      userName: new FormControl(null, Validators.required),
       email: new FormControl(null, [Validators.email, Validators.required]),
       password: new FormControl(null, [
         Validators.minLength(4),
@@ -30,7 +36,6 @@ export class RegisterComponent implements OnInit {
         Validators.required,
       ]),
     });
-    this.getUsers();
   }
 
   showPassword() {
@@ -39,17 +44,32 @@ export class RegisterComponent implements OnInit {
 
   onSubmit() {
     const user = this.signupForm.value;
-    const password = user.password;
+    const firstPassword = user.password;
     const retypePassword = user.retypePassword;
 
-    if (password !== retypePassword) return;
-    this.accountService.createUser(user);
-    this.getUsers();
-    this.toastr.success('You are successfully registered!');
-    this.signupForm.reset();
-  }
+    let createUser: CreateUser = {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      userName: user.userName,
+      email: user.email,
+      password: user.password,
+    };
 
-  getUsers() {
-    console.log(this.accountService.getAll());
+    if (firstPassword !== retypePassword) return;
+    this.accountService.register(createUser).subscribe(
+      (res: UserRegister) => {
+        if (res) {
+          this.route.navigateByUrl('/login');
+          this.signupForm.reset();
+          this.toastr.success(res.message);
+          setTimeout(() => {
+            this.toastr.success('Please sign in');
+          }, 500);
+        }
+      },
+      (error) => {
+        if (error) this.toastr.warning('Username or Email are incorrect!');
+      }
+    );
   }
 }

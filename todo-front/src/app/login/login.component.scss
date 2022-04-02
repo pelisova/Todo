@@ -17,6 +17,7 @@
     background: #fff;
     border-radius: 2px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    border-radius: 2%;
 
     .form-center {
       box-sizing: border-box;
@@ -64,7 +65,7 @@ input[type="submit"],
   height: 32px;
   background: #16a085;
   border: none;
-  border-radius: 2px;
+  border-radius: 5%;
   color: #fff;
   font-family: "Roboto", sans-serif;
   font-weight: 500;
@@ -121,6 +122,7 @@ input[type="submit"]:active {
     margin-top: 2px;
     margin-left: 0px;
     background-color: grey;
+    border-radius: 5%;
   }
 
   #login-box {
