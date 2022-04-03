@@ -7,7 +7,7 @@ export interface TodoTask {
 
 export interface CreateTask {
   text: string;
-  userId: number;
+  userId: number | undefined;
 }
 
 export interface PagParams {

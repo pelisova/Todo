@@ -23,10 +23,11 @@ namespace BusinessLayer.Services
             _mapper = mapper;
         }
 
-        public async Task<PagedResponse<TaskDto>> CreateTask(CreateTaskDto createTaskDto, PaginationParams paginationParams)
+        public async Task<PagedResponse<TaskDto>> CreateTask(int userId, CreateTaskDto createTaskDto, PaginationParams paginationParams)
         {
+            if (userId != createTaskDto.UserId) throw new Exception("Unauthorized request!");
             var task = _mapper.Map<TodoTask>(createTaskDto);
-            return _mapper.Map<PagedResponse<TaskDto>>(await _taskRepository.CreateTask(task, paginationParams));
+            return _mapper.Map<PagedResponse<TaskDto>>(await _taskRepository.CreateTask(userId, task, paginationParams));
         }
 
         public async Task<TaskDto> GetTaskById(int id)
@@ -39,31 +40,30 @@ namespace BusinessLayer.Services
             return _mapper.Map<List<TaskDto>>(await _taskRepository.GetTasks());
         }
 
-        public async Task<PagedResponse<TaskDto>> UpdateTask(int id, UpdateTaskDto updateTaskDto, PaginationParams paginationParams)
+        public async Task<PagedResponse<TaskDto>> UpdateTask(int userId, UpdateTaskDto updateTaskDto, PaginationParams paginationParams)
         {
-            var task = await _taskRepository.GetTaskById(id);
-            var user = await _userRepository.GetUserById(updateTaskDto.UserId);
-            if(user.Id != task.UserId) throw new Exception("You do not have access for this resource!");
+            if (userId != updateTaskDto.UserId) throw new Exception("You do not have access for this resource!");
+            var task = await _taskRepository.GetTaskById(updateTaskDto.Id);
             var taskToUpdate = _mapper.Map<UpdateTaskDto, TodoTask>(updateTaskDto, task);
-            return _mapper.Map<PagedResponse<TaskDto>>(await _taskRepository.UpdateTask(taskToUpdate, paginationParams));
+            return _mapper.Map<PagedResponse<TaskDto>>(await _taskRepository.UpdateTask(userId, taskToUpdate, paginationParams));
         }
 
-        public async Task<PagedResponse<TaskDto>> DeleteTask(int id, PaginationParams paginationParams)
+        public async Task<PagedResponse<TaskDto>> DeleteTask(string taskId, int userId, PaginationParams paginationParams)
         {
             try
             {
-               return _mapper.Map<PagedResponse<TaskDto>>(await _taskRepository.DeleteTask(id, paginationParams));
+                return _mapper.Map<PagedResponse<TaskDto>>(await _taskRepository.DeleteTask(taskId, userId, paginationParams));
             }
             catch (System.Exception ex)
             {
-                
+
                 throw ex;
-            }   
+            }
         }
 
-        public async Task<PagedResponse<TaskDto>> GetTasksPagination(PaginationParams paginationParams)
+        public async Task<PagedResponse<TaskDto>> GetTasksPagination(int userId, PaginationParams paginationParams)
         {
-            return _mapper.Map<PagedResponse<TaskDto>>(await _taskRepository.GetTasksPagination(paginationParams));
+            return _mapper.Map<PagedResponse<TaskDto>>(await _taskRepository.GetTasksPagination(userId, paginationParams));
         }
     }
 }

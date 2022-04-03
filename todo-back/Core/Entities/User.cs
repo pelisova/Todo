@@ -11,7 +11,7 @@ namespace Core.Entities
     {
         // doesn't need to be declared because IdentityUser table implement Id
         // public int UserId { get; set; } 
-        
+
         [Required]
         public string? FirstName { get; set; }
 
@@ -22,7 +22,9 @@ namespace Core.Entities
         // [Required]
         // [EmailAddress]
         // public string? Email { get; set; }
-        public List<TodoTask>? Tasks {get; set;} 
+        public List<TodoTask>? Tasks { get; set; }
         public ICollection<UserRole>? UserRoles { get; set; }
+
+
     }
 }

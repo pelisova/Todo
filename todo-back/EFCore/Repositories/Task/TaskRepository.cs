@@ -24,11 +24,11 @@ namespace EFCore.Repositories
             _mapper = mapper;
         }
 
-        public async Task<PagedResponse<TodoTask>> CreateTask(TodoTask task, PaginationParams paginationParams)
+        public async Task<PagedResponse<TodoTask>> CreateTask(int userId, TodoTask task, PaginationParams paginationParams)
         {
             await _context.Tasks.AddAsync(task);
             _context.SaveChangesAsync();
-             return await this.GetTasksPagination(paginationParams);
+            return await this.GetTasksPagination(userId, paginationParams);
         }
 
         public async Task<TodoTask> GetTaskById(int id)
@@ -41,28 +41,28 @@ namespace EFCore.Repositories
             return await _context.Tasks.OrderBy(t => t.Id).ToListAsync();
         }
 
-        
-        public async Task<PagedResponse<TodoTask>> UpdateTask(TodoTask task, PaginationParams paginationParams)
+
+        public async Task<PagedResponse<TodoTask>> UpdateTask(int userId, TodoTask task, PaginationParams paginationParams)
         {
             _context.Tasks.Update(task);
             await _context.SaveChangesAsync();
-            return await this.GetTasksPagination(paginationParams);
+            return await this.GetTasksPagination(userId, paginationParams);
         }
 
-        public async Task<PagedResponse<TodoTask>> DeleteTask(int id, PaginationParams paginationParams)
+        public async Task<PagedResponse<TodoTask>> DeleteTask(string taskId, int userId, PaginationParams paginationParams)
         {
-            var task = await this.GetTaskById(id);
-            if(task == null) {
-                throw new Exception("Task is not found!");    
-            }
+            var task = await this.GetTaskById(Int32.Parse(taskId));
+            if (task.UserId != userId) throw new Exception("You don't have permission for this action!");
+            if (task == null) throw new Exception("Task is not found!");
+
             _context.Tasks.Remove(task);
             await _context.SaveChangesAsync();
-            return await this.GetTasksPagination(paginationParams);
+            return await this.GetTasksPagination(userId, paginationParams);
         }
 
-        public async Task<PagedResponse<TodoTask>> GetTasksPagination(PaginationParams paginationParams)
+        public async Task<PagedResponse<TodoTask>> GetTasksPagination(int userId, PaginationParams paginationParams)
         {
-            var query = _context.Tasks.OrderBy(t => t.Id).AsQueryable();
+            var query = _context.Tasks.OrderBy(t => t.Id).Where(u => u.UserId == userId).AsQueryable();
             // var tasks = query.ProjectTo<TaskDto>(_mapper.ConfigurationProvider).AsNoTracking();
             return await PagedResponse<TodoTask>.CreateAsync(query, paginationParams.PageNumber, paginationParams.PageSize);
         }

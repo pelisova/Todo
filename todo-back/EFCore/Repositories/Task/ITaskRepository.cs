@@ -10,11 +10,11 @@ namespace EFCore.Repositories
 {
     public interface ITaskRepository
     {
-        Task<PagedResponse<TodoTask>> CreateTask(TodoTask task, PaginationParams paginationParams);
+        Task<PagedResponse<TodoTask>> CreateTask(int userId, TodoTask task, PaginationParams paginationParams);
         Task<List<TodoTask>> GetTasks();
-        Task<PagedResponse<TodoTask>> GetTasksPagination(PaginationParams paginationParams);
+        Task<PagedResponse<TodoTask>> GetTasksPagination(int userId, PaginationParams paginationParams);
         Task<TodoTask> GetTaskById(int id);
-        Task<PagedResponse<TodoTask>> UpdateTask(TodoTask task, PaginationParams paginationParams);
-        Task<PagedResponse<TodoTask>> DeleteTask(int id, PaginationParams paginationParams);
+        Task<PagedResponse<TodoTask>> UpdateTask(int userId, TodoTask task, PaginationParams paginationParams);
+        Task<PagedResponse<TodoTask>> DeleteTask(string taskId, int userId, PaginationParams paginationParams);
     }
 }

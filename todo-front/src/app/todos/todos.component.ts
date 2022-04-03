@@ -9,6 +9,8 @@ import { PaginatedResult, Pagination } from '../_models/pagination';
 import { AccountService } from '../_services/account.service';
 import { DataService } from '../_services/data.service';
 import { TodoDialogComponent } from '../todo-dialog/todo-dialog.component';
+import { User } from '../_models/user';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-todos',
@@ -18,6 +20,7 @@ import { TodoDialogComponent } from '../todo-dialog/todo-dialog.component';
 export class TodosComponent implements OnInit {
   todos: TodoTask[] = [];
   pagination!: Pagination;
+  currentUser: User | null | undefined;
 
   PagParams: PagParams = {
     pageNumber: 1,
@@ -35,6 +38,9 @@ export class TodosComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.accountService.currentUser$.subscribe(
+      (user) => (this.currentUser = user)
+    );
     this.getData();
   }
 
@@ -66,9 +72,9 @@ export class TodosComponent implements OnInit {
     };
 
     if (todo.completed) {
-      this.toastr.success('Your task is completed!');
+      this.toastr.success('Your task is completed.');
     } else {
-      this.toastr.warning('Task is not completed!');
+      this.toastr.warning('Task is not completed.');
     }
 
     // subscribe is required to trigger HttpClient request (because of observable!)
@@ -80,7 +86,7 @@ export class TodosComponent implements OnInit {
 
     let createTask: CreateTask = {
       text: form.value.todo,
-      userId: 2,
+      userId: this.currentUser?.id,
     };
 
     this.dataService

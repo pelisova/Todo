@@ -9,11 +9,11 @@ namespace BusinessLayer.Services
 {
     public interface ITaskService
     {
-        Task<PagedResponse<TaskDto>> CreateTask(CreateTaskDto createTaskDto, PaginationParams paginationParams);
+        Task<PagedResponse<TaskDto>> CreateTask(int userId, CreateTaskDto createTaskDto, PaginationParams paginationParams);
         Task<List<TaskDto>> GetTasks();
-        Task<PagedResponse<TaskDto>> GetTasksPagination(PaginationParams paginationParams);
+        Task<PagedResponse<TaskDto>> GetTasksPagination(int userId, PaginationParams paginationParams);
         Task<TaskDto> GetTaskById(int id);
-        Task<PagedResponse<TaskDto>> UpdateTask(int id, UpdateTaskDto updateTaskDto, PaginationParams paginationParams);
-        Task<PagedResponse<TaskDto>> DeleteTask(int id, PaginationParams paginationParams);
+        Task<PagedResponse<TaskDto>> UpdateTask(int userId, UpdateTaskDto updateTaskDto, PaginationParams paginationParams);
+        Task<PagedResponse<TaskDto>> DeleteTask(string taskId, int userId, PaginationParams paginationParams);
     }
 }

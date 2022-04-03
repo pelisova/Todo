@@ -137,8 +137,16 @@
   position: fixed !important;
   bottom: 7% !important;
   right: 0 !important;
-  left: 45% !important;
-  width: 200px !important;
+  left: 40% !important;
+  width: 300px !important;
+}
+
+.d-flex-error {
+  position: fixed !important;
+  bottom: 20% !important;
+  right: 0 !important;
+  left: 40% !important;
+  width: 300px !important;
 }
 
 .my-pagination ::ng-deep .page-link {

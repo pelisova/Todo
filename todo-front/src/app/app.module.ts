@@ -52,7 +52,7 @@ import { JwtInterceptor } from './_interceptors/jwt.interceptor';
     SweetAlert2Module.forRoot(),
     ToastrModule.forRoot({
       timeOut: 1500,
-      positionClass: 'toast-top-right',
+      positionClass: 'toast-top-left',
       preventDuplicates: false,
       easing: 'easi-in',
       // progressBar: true,
