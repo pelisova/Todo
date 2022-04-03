@@ -40,7 +40,10 @@ export class AccountService {
   }
 
   setCurrentUser(user: User) {
-    localStorage.setItem('token', user.token);
+    if (user.token) {
+      localStorage.setItem('token', user.token);
+    }
+
     this.currentUser$.next(user);
   }
 

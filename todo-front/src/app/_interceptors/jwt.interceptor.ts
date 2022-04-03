@@ -6,13 +6,11 @@ import {
   HttpInterceptor,
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { AccountService } from '../_services/account.service';
-import { User } from '../_models/user';
-import { take } from 'rxjs/operators';
+import { Toast, ToastrService } from 'ngx-toastr';
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
-  constructor(private accountService: AccountService) {}
+  constructor(private toastr: ToastrService) {}
 
   intercept(
     request: HttpRequest<unknown>,
@@ -21,11 +19,21 @@ export class JwtInterceptor implements HttpInterceptor {
     const token: string | null = localStorage.getItem('token');
 
     if (token) {
-      request = request.clone({
-        setHeaders: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const expiry = JSON.parse(atob(token.split('.')[1])).exp;
+
+      const IsExpired: boolean =
+        Math.floor(new Date().getTime() / 1000) >= expiry;
+
+      if (IsExpired) {
+        localStorage.removeItem('token');
+        this.toastr.info('Oops! Your session is expired! Try to refresh page.');
+      } else {
+        request = request.clone({
+          setHeaders: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+      }
     }
 
     return next.handle(request);

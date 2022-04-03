@@ -48,12 +48,10 @@ export class LoginComponent implements OnInit {
         if (res) {
           this.signupForm.reset();
           this.router.navigateByUrl('/home');
-          setTimeout(() => {
-            this.toastr.success(res.message);
-          }, 500);
         }
       },
       (error) => {
+        console.log(error);
         if (error) this.toastr.warning('Username or Email are incorrect!');
       }
     );

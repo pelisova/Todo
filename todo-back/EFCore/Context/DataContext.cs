@@ -24,7 +24,7 @@ namespace EFCore.Context
         public DbSet<TodoTask>? Tasks { get; set; }
 
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder) 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder); // override method
 
@@ -39,7 +39,7 @@ namespace EFCore.Context
                 .HasMany(ur => ur.UserRoles)
                 .WithOne(u => u.role)
                 .HasForeignKey(ur => ur.RoleId)
-                .IsRequired();    
+                .IsRequired();
 
             // this will be set up from code, while implementing identity rules for validation
             // modelBuilder.Entity<User>()
@@ -51,7 +51,7 @@ namespace EFCore.Context
             modelBuilder.Entity<TodoTask>()
                 .HasOne(t => t.User)
                 .WithMany(u => u.Tasks)
-                .OnDelete(DeleteBehavior.Cascade);  
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
     }
