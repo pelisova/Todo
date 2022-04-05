@@ -100,6 +100,7 @@
     class="my-pagination"
     [boundaryLinks]="true"
     [totalItems]="pagination.totalItems"
+    [maxSize]="5"
     [itemsPerPage]="pagination.itemsPerPage"
     [(ngModel)]="pagination.currentPage"
     (pageChanged)="pagedChanged($event)"
@@ -109,4 +110,5 @@
     lastText="&raquo;"
   >
   </pagination>
+  <p class="pag-info">Total pages: {{ pagination.totalPages }}</p>
 </div>

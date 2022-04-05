@@ -138,7 +138,14 @@
   bottom: 7% !important;
   right: 0 !important;
   left: 40% !important;
-  width: 300px !important;
+  width: 200px !important;
+  flex-direction: column;
+  .pag-info {
+    font-size: x-small;
+    margin-top: -15px;
+    justify-content: left;
+    display: flex;
+  }
 }
 
 .d-flex-error {
@@ -174,5 +181,17 @@
     right: 0 !important;
     left: 23% !important;
     width: 200px !important;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .dropdown {
+    margin-left: -70px;
+  }
+
+  #dropdown-animated {
+    li {
+      cursor: pointer;
+    }
   }
 }
