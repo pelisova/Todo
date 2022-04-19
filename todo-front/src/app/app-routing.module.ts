@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AdminPageComponent } from './admin/admin-page/admin-page.component';
 import { LoginComponent } from './login/login.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { RegisterComponent } from './register/register.component';
@@ -15,7 +16,14 @@ const routes: Routes = [
     path: '',
     runGuardsAndResolvers: 'always',
     canActivate: [AuthGuard],
-    children: [{ path: 'home', component: TodosComponent }],
+    children: [
+      { path: 'home', component: TodosComponent },
+      {
+        path: 'admin-page',
+        component: AdminPageComponent,
+        canActivate: [AdminGuard],
+      },
+    ],
   },
 
   { path: 'welcome', component: WelcomeComponent },

@@ -1,0 +1,132 @@
+html,
+body {
+  height: 100%;
+}
+
+.admin-template {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, #3c5f69, rgb(74, 215, 240)) !important;
+}
+
+.admin-dashboard {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  max-width: 1000px;
+  max-height: 600px;
+}
+
+.left-user-menu {
+  display: flex;
+  flex-direction: column;
+  padding: 25px;
+  width: 30%;
+  background-color: white;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.user-list {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  width: 100%;
+
+  a {
+    text-decoration: none !important;
+    width: 100%;
+  }
+  .user-list-item > p {
+    color: #305a48;
+    padding: 5px;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+
+    &:hover {
+      cursor: pointer;
+      background: whitesmoke;
+      width: 100%;
+      text-decoration: none;
+    }
+
+    &.active {
+      background-color: lightgreen;
+    }
+  }
+}
+
+.right-tasks-preview {
+  padding: 25px;
+  flex-grow: 1;
+  background-color: whitesmoke;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.task-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: 38px;
+
+  p {
+    color: #305a48 !important;
+    padding: 5px;
+    width: 100%;
+    background-color: white;
+
+    &:hover {
+      cursor: pointer;
+      box-shadow: 0 0 0 5px #eeeeee;
+      transform: scale(1.01);
+    }
+  }
+}
+
+h1 {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #3f6d5a;
+  display: flex;
+  justify-content: center;
+}
+
+hr {
+  width: 100%;
+  border: 2px solid darkgreen;
+  margin: 0;
+}
+
+.fa-trash {
+  transform: scale(1.4);
+  margin-top: 4px;
+  color: black;
+
+  &:hover {
+    transform: scale(1.7);
+  }
+}
+
+.fa-cog {
+  font-size: 25px;
+  margin-left: -25px;
+
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.03);
+  }
+}
+
+.drop-menu {
+  margin-left: -65px;
+  width: 50px;
+}

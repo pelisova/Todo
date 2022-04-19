@@ -40,7 +40,8 @@
   }
 
   .dropdown-item {
-    padding-left: 6px;
+    // padding-left: 6px;
+    padding: 10px;
     &:hover {
       cursor: pointer;
     }

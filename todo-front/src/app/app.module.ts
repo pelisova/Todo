@@ -24,6 +24,8 @@ import { LoginComponent } from './login/login.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { JwtInterceptor } from './_interceptors/jwt.interceptor';
+import { AdminPageComponent } from './admin/admin-page/admin-page.component';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   declarations: [
@@ -36,6 +38,7 @@ import { JwtInterceptor } from './_interceptors/jwt.interceptor';
     NotFoundComponent,
     LoginComponent,
     WelcomeComponent,
+    AdminPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -49,6 +52,7 @@ import { JwtInterceptor } from './_interceptors/jwt.interceptor';
     HttpClientModule,
     MatListModule,
     MatDialogModule,
+    MatMenuModule,
     SweetAlert2Module.forRoot(),
     ToastrModule.forRoot({
       timeOut: 1500,

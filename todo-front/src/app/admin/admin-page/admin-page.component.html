@@ -1,0 +1,49 @@
+<div class="admin-template">
+  <div class="admin-dashboard">
+    <div class="left-user-menu">
+      <h1>Users</h1>
+      <hr />
+      <div class="user-list">
+        <a class="user-list-item">
+          <p class="active">
+            user #1
+            <i class="fa fa-trash" appToolTip="Delete" aria-hidden="true"></i>
+          </p>
+          <p>
+            user #2
+            <i class="fa fa-trash" appToolTip="Delete" aria-hidden="true"></i>
+          </p>
+        </a>
+      </div>
+    </div>
+
+    <div class="right-tasks-preview">
+      <h1>Tasks</h1>
+      <div class="task-item">
+        <p>This is #1 task</p>
+        <p>This is #2 task</p>
+      </div>
+    </div>
+    <div class="drop-menu">
+      <button mat-button [matMenuTriggerFor]="menu">
+        <mat-icon>settings</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu" yPosition="below" xPosition="before">
+        <button mat-menu-item>
+          <mat-icon>account_circle</mat-icon>Profile
+        </button>
+        <button mat-menu-item routerLink="/home">
+          <mat-icon> list_alt</mat-icon>Todo
+        </button>
+        <button mat-menu-item>
+          <mat-icon>drag_indicator</mat-icon>Preview
+        </button>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>exit_to_app</mat-icon>Logout
+        </button>
+      </mat-menu>
+
+      <!-- <i class="fa fa-cog fa-3xl" aria-hidden="true"></i> -->
+    </div>
+  </div>
+</div>

@@ -28,12 +28,28 @@
           role="menu"
           aria-labelledby="button-animated"
         >
-          <li role="menuitem"><a class="dropdown-item">Profile</a></li>
           <li role="menuitem">
-            <a class="dropdown-item">Preview</a>
+            <a class="dropdown-item"
+              ><i class="fa fa-user-circle" aria-hidden="true"></i> Profile</a
+            >
           </li>
           <li role="menuitem">
-            <a class="dropdown-item" (click)="logout()">Logout</a>
+            <a
+              class="dropdown-item"
+              *ngIf="user.roles.includes('Admin')"
+              routerLink="/admin-page"
+              ><i class="fa fa-user" aria-hidden="true"></i> Admin</a
+            >
+          </li>
+          <li role="menuitem">
+            <a class="dropdown-item"
+              ><i class="fa fa-bars" aria-hidden="true"></i> Preview</a
+            >
+          </li>
+          <li role="menuitem">
+            <a class="dropdown-item" (click)="logout()"
+              ><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a
+            >
           </li>
         </ul>
       </div>
