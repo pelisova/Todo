@@ -21,11 +21,10 @@ namespace API.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpGet]
+        [HttpGet("users")]
         public async Task<ActionResult<List<UserDto>>> GetUsers()
         {
             var users = await _userService.GetUsers();
-            // return Ok(users);
             return (!users.Any()) ? NotFound("Users are not found!") : Ok(users);
         }
 
@@ -66,6 +65,7 @@ namespace API.Controllers
             return (newUser == null) ? NotFound("Oops! User is not found!") : Created("User is successfully updated", newUser);
         }
 
+        [Authorize(Policy = "RequireAdminRole")]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteUser(int id)
         {

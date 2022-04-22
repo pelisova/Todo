@@ -4,13 +4,13 @@
       <h1>Users</h1>
       <hr />
       <div class="user-list">
-        <a class="user-list-item">
-          <p class="active">
-            user #1
-            <i class="fa fa-trash" appToolTip="Delete" aria-hidden="true"></i>
-          </p>
-          <p>
-            user #2
+        <a class="user-list-item" *ngFor="let user of users; let i = index">
+          <p
+            [class.active]="selectedIndex === i"
+            (click)="showTasks(user.id)"
+            (click)="setIndex(i)"
+          >
+            {{ user.username }}
             <i class="fa fa-trash" appToolTip="Delete" aria-hidden="true"></i>
           </p>
         </a>
@@ -19,10 +19,10 @@
 
     <div class="right-tasks-preview">
       <h1>Tasks</h1>
-      <div class="task-item">
-        <p>This is #1 task</p>
-        <p>This is #2 task</p>
+      <div class="task-item" *ngFor="let task of tasks">
+        <p class="task-text" *ngIf="task">{{ task.text }}</p>
       </div>
+      <h2 *ngIf="errorMsg">{{ errorMsg }}</h2>
     </div>
     <div class="drop-menu">
       <button mat-button [matMenuTriggerFor]="menu">

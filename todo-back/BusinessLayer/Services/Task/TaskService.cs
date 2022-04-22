@@ -35,9 +35,9 @@ namespace BusinessLayer.Services
             return _mapper.Map<TaskDto>(await _taskRepository.GetTaskById(id));
         }
 
-        public async Task<List<TaskDto>> GetTasks()
+        public async Task<List<TaskDto>> GetTasks(int userId)
         {
-            return _mapper.Map<List<TaskDto>>(await _taskRepository.GetTasks());
+            return _mapper.Map<List<TaskDto>>(await _taskRepository.GetTasks(userId));
         }
 
         public async Task<PagedResponse<TaskDto>> UpdateTask(int userId, UpdateTaskDto updateTaskDto, PaginationParams paginationParams)

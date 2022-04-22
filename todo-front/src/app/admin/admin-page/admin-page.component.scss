@@ -29,6 +29,8 @@ body {
   background-color: white;
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .user-list {
@@ -67,6 +69,7 @@ body {
   background-color: whitesmoke;
   border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
+  overflow-y: scroll;
 }
 
 .task-item {
@@ -75,7 +78,7 @@ body {
   align-items: center;
   justify-content: center;
   width: 100%;
-  margin-top: 38px;
+  // margin-top: 38px;
 
   p {
     color: #305a48 !important;
@@ -98,6 +101,15 @@ h1 {
   color: #3f6d5a;
   display: flex;
   justify-content: center;
+}
+
+h2 {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+  letter-spacing: 1px;
+  background-color: white;
 }
 
 hr {
@@ -127,6 +139,11 @@ hr {
 }
 
 .drop-menu {
-  margin-left: -65px;
+  margin-left: -81px;
   width: 50px;
+}
+
+.task-text {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  letter-spacing: 0.7px;
 }

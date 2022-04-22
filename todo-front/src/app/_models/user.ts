@@ -20,3 +20,9 @@ export interface User {
   roles: string[];
   token: string;
 }
+
+export interface UserDto {
+  id: number;
+  username: string;
+  email: string;
+}

@@ -9,8 +9,8 @@ namespace Core.DTOs.user
 {
     public class UserDto
     {
-        public string? UserName { get; set; }
+        public int Id { get; set; }
+        public string? Username { get; set; }
         public string? Email { get; set; }
-        public List<TaskDto>? Tasks { get; set; }
     }
 }

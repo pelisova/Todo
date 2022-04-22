@@ -71,7 +71,6 @@ namespace BusinessLayer.Services
 
         public async Task<List<UserDto>> GetUsers()
         {
-            //  return _mapper.Map<List<UserDto>>(await _userRepository.GetUsers());
             return await _userRepository.GetUsers();
         }
 

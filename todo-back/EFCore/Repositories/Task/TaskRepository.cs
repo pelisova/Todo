@@ -36,9 +36,9 @@ namespace EFCore.Repositories
             return await _context.Tasks.FirstOrDefaultAsync(t => t.Id == id);
         }
 
-        public async Task<List<TodoTask>> GetTasks()
+        public async Task<List<TodoTask>> GetTasks(int userId)
         {
-            return await _context.Tasks.OrderBy(t => t.Id).ToListAsync();
+            return await _context.Tasks.Where(u => u.UserId == userId).OrderBy(t => t.Id).ToListAsync();
         }
 
 

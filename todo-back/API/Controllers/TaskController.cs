@@ -52,10 +52,10 @@ namespace API.Controllers
 
         }
 
-        [HttpGet]
-        public async Task<ActionResult<List<TaskDto>>> GetTasks()
+        [HttpGet("user/{userId}")]
+        public async Task<ActionResult<List<TaskDto>>> GetTasks(int userId)
         {
-            var tasks = await _taskService.GetTasks();
+            var tasks = await _taskService.GetTasks(userId);
             return (!tasks.Any()) ? NotFound("Tasks are not found!") : Ok(tasks);
         }
 

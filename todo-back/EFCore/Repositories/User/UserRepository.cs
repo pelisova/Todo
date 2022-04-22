@@ -30,8 +30,7 @@ namespace EFCore.Repositories
 
         public async Task<List<UserDto>> GetUsers()
         {
-            // return await _context.Users.Include(t => t.Tasks).ToListAsync();
-            return await _mapper.ProjectTo<UserDto>(_context.Users).ToListAsync();
+            return await _mapper.ProjectTo<UserDto>(_context.Users.Where(user => user.FirstName != "admin")).ToListAsync();
         }
 
         public async Task<User> GetUserById(int id)
