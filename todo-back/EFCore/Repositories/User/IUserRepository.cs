@@ -17,6 +17,6 @@ namespace EFCore.Repositories
         Task<User> GetUserById(int id);
         Task<User> GetUserByEmail(string email);
         Task<User> UpdateUser(User user);
-        Task DeleteUser(int id);
+        Task<List<UserDto>> DeleteUser(int id);
     }
 }

@@ -16,6 +16,6 @@ namespace BusinessLayer.Services
         Task<UserDto> GetUserById(int id);
         Task<LoggedInUserDto> GetUserByEmail(string email);
         Task<UserDto> UpdateUser(int id, UpdateUserDto updateUserDto);
-        Task DeleteUser(int id);
+        Task<List<UserDto>> DeleteUser(int id);
     }
 }

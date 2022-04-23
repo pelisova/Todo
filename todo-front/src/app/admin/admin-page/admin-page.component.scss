@@ -43,7 +43,14 @@ body {
     text-decoration: none !important;
     width: 100%;
   }
+
+  .user-list-item {
+    display: flex;
+    width: 100%;
+  }
+
   .user-list-item > p {
+    font-size: medium;
     color: #305a48;
     padding: 5px;
     width: 100%;
@@ -120,7 +127,8 @@ hr {
 
 .fa-trash {
   transform: scale(1.4);
-  margin-top: 4px;
+  margin-top: 10px;
+  margin-left: -25px;
   color: black;
 
   &:hover {

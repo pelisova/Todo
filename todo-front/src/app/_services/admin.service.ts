@@ -19,4 +19,8 @@ export class AdminService {
   getUserTasks(userId: number) {
     return this.http.get<TodoTask[]>(this.baseUrl + 'task/user/' + userId);
   }
+
+  deleteUser(userId: number) {
+    return this.http.delete<UserDto[]>(this.baseUrl + 'user/' + userId);
+  }
 }

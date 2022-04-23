@@ -48,6 +48,13 @@ export class AdminPageComponent implements OnInit {
     );
   }
 
+  deleteUser(userId: number) {
+    this.adminService.deleteUser(userId).subscribe((res) => {
+      this.users = res;
+      this.tasks = undefined;
+    });
+  }
+
   logout() {
     this.accountService.logout();
     this.router.navigateByUrl('/login');

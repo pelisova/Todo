@@ -67,12 +67,12 @@ namespace API.Controllers
 
         [Authorize(Policy = "RequireAdminRole")]
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteUser(int id)
+        public async Task<ActionResult<List<UserDto>>> DeleteUser(int id)
         {
             try
             {
-                await _userService.DeleteUser(id);
-                return Ok("User is successfully deleted");
+                var users = await _userService.DeleteUser(id);
+                return (!users.Any()) ? NotFound("Users are not found!") : Ok(users);
             }
             catch (System.Exception ex)
             {

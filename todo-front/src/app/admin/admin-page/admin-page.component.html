@@ -10,9 +10,14 @@
             (click)="showTasks(user.id)"
             (click)="setIndex(i)"
           >
-            {{ user.username }}
-            <i class="fa fa-trash" appToolTip="Delete" aria-hidden="true"></i>
+            {{ user.username | titlecase }}
           </p>
+          <i
+            class="fa fa-trash"
+            appToolTip="Delete"
+            aria-hidden="true"
+            (click)="deleteUser(user.id)"
+          ></i>
         </a>
       </div>
     </div>

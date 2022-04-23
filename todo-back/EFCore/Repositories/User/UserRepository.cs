@@ -45,7 +45,7 @@ namespace EFCore.Repositories
             return user;
         }
 
-        public async Task DeleteUser(int id)
+        public async Task<List<UserDto>> DeleteUser(int id)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
 
@@ -58,6 +58,8 @@ namespace EFCore.Repositories
             {
                 throw new Exception("User is not found!");
             }
+
+            return await this.GetUsers();
 
         }
 

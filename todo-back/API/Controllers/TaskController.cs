@@ -97,6 +97,7 @@ namespace API.Controllers
             }
         }
 
+
         [HttpDelete("{taskId}")]
         public async Task<ActionResult<PagedResponse<TaskDto>>> DeleteTask(string taskId, [FromQuery] PaginationParams paginationParams)
         {

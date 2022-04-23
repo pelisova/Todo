@@ -86,12 +86,12 @@ namespace BusinessLayer.Services
             return _mapper.Map<UserDto>(await _userRepository.UpdateUser(userToUpdate));
         }
 
-        public async Task DeleteUser(int id)
+        public async Task<List<UserDto>> DeleteUser(int id)
         {
 
             try
             {
-                await _userRepository.DeleteUser(id);
+               return await _userRepository.DeleteUser(id);
             }
             catch (System.Exception ex)
             {
