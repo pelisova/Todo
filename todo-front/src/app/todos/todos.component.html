@@ -101,30 +101,33 @@
       ></app-todo-item>
     </div>
   </div>
-</section>
 
-<div class="d-flex-error justify-content-center error" *ngIf="error">
-  <h1>{{ error }}</h1>
-</div>
-
-<div
-  class="d-flex justify-content-center"
-  style="padding: 1%"
-  *ngIf="pagination"
->
-  <pagination
-    class="my-pagination"
-    [boundaryLinks]="true"
-    [totalItems]="pagination.totalItems"
-    [maxSize]="5"
-    [itemsPerPage]="pagination.itemsPerPage"
-    [(ngModel)]="pagination.currentPage"
-    (pageChanged)="pagedChanged($event)"
-    previousText="&lsaquo;"
-    nextText="&rsaquo;"
-    firstText="&laquo;"
-    lastText="&raquo;"
+  <div
+    class="d-flex-error justify-content-center error"
+    *ngIf="error && todos.length == 0"
   >
-  </pagination>
-  <p class="pag-info">Total pages: {{ pagination.totalPages }}</p>
-</div>
+    <h1>{{ error }}</h1>
+  </div>
+
+  <div
+    class="d-flex justify-content-center"
+    style="padding: 1%"
+    *ngIf="pagination && todos.length >= 5"
+  >
+    <pagination
+      class="my-pagination"
+      [boundaryLinks]="true"
+      [totalItems]="pagination.totalItems"
+      [maxSize]="5"
+      [itemsPerPage]="pagination.itemsPerPage"
+      [(ngModel)]="pagination.currentPage"
+      (pageChanged)="pagedChanged($event)"
+      previousText="&lsaquo;"
+      nextText="&rsaquo;"
+      firstText="&laquo;"
+      lastText="&raquo;"
+    >
+    </pagination>
+    <p class="pag-info">Total pages: {{ pagination.totalPages }}</p>
+  </div>
+</section>

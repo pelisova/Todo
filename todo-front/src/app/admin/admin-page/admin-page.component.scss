@@ -155,3 +155,36 @@ hr {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   letter-spacing: 0.7px;
 }
+
+@media only screen and (max-width: 600px) {
+  .admin-dashboard {
+    width: 100%;
+    height: 100%;
+    max-width: 300px;
+    max-height: 600px;
+    margin-left: -25px;
+  }
+
+  .left-user-menu {
+    width: 40% !important;
+    min-width: 40% !important;
+  }
+
+  .task-text {
+    font-size: smaller;
+  }
+
+  h1 {
+    font-size: medium;
+  }
+
+  .user-list {
+    .user-list-item > p {
+      font-size: x-small;
+    }
+  }
+
+  .fa-trash {
+    margin-left: 5px;
+  }
+}

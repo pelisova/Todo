@@ -10,7 +10,6 @@ import { AccountService } from '../_services/account.service';
 import { DataService } from '../_services/data.service';
 import { TodoDialogComponent } from '../todo-dialog/todo-dialog.component';
 import { User } from '../_models/user';
-import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-todos',
@@ -21,10 +20,11 @@ export class TodosComponent implements OnInit {
   todos: TodoTask[] = [];
   pagination!: Pagination;
   currentUser: User | null | undefined;
+  pageNum: number = 1;
 
   PagParams: PagParams = {
-    pageNumber: 1,
-    pageSize: 3,
+    pageNumber: this.pageNum,
+    pageSize: 5,
   };
 
   error = null;
@@ -56,8 +56,14 @@ export class TodosComponent implements OnInit {
     );
   }
 
+  setPageNumber(pageNumber: number) {
+    this.PagParams.pageNumber = pageNumber;
+    this.getData();
+  }
+
   pagedChanged(event: any) {
-    this.PagParams.pageNumber = event.page;
+    this.pageNum = event.page;
+    this.PagParams.pageNumber = this.pageNum;
     this.getData();
   }
 
@@ -141,7 +147,13 @@ export class TodosComponent implements OnInit {
     this.dataService
       .deleteTodo(id, this.PagParams)
       .subscribe((res: PaginatedResult<TodoTask[]>) => {
-        if (res.result) this.todos = res.result.data.items;
+        if (res.result) {
+          this.todos = res.result.data.items;
+          if (this.todos.length == 0) {
+            this.setPageNumber((this.pageNum += -1));
+          }
+        }
+
         if (res.pagination) this.pagination = res.pagination;
 
         Swal.fire({

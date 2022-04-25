@@ -136,8 +136,8 @@
 }
 
 .d-flex {
-  position: fixed !important;
-  bottom: 5% !important;
+  position: absolute !important;
+  bottom: -10% !important;
   right: 0 !important;
   left: 40% !important;
   width: 300px !important;
@@ -151,11 +151,10 @@
 }
 
 .d-flex-error {
-  position: fixed !important;
+  width: 100% !important;
+  display: flex;
+  position: absolute !important;
   bottom: 20% !important;
-  right: 0 !important;
-  left: 40% !important;
-  width: 300px !important;
 }
 
 .my-pagination ::ng-deep .page-link {
@@ -178,20 +177,31 @@
 
 @media only screen and (max-width: 600px) {
   .d-flex {
-    position: fixed !important;
-    bottom: 7% !important;
+    position: absolute !important;
+    bottom: -10% !important;
     right: 0 !important;
-    left: 23% !important;
+    left: 25% !important;
+    width: 200px !important;
+  }
+}
+
+@media only screen and (max-width: 600px) and (min-width: 400px) {
+  .d-flex {
+    position: absolute !important;
+    bottom: -10% !important;
+    right: 0 !important;
+    left: 35% !important;
     width: 200px !important;
   }
 }
 
 @media only screen and (max-width: 600px) {
   .dropdown {
-    margin-left: -70px;
+    margin-left: -75px;
   }
 
   #dropdown-animated {
+    width: 91% !important;
     li {
       cursor: pointer;
     }
